@@ -27,6 +27,8 @@ VERSION=${VERSION:-1.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
+WHATPULSE_GROUP=${WHATPULSE_GROUP:-input}
+
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
     i?86) ARCH=i486 ;;
@@ -47,9 +49,9 @@ else
 fi
 
 
-if ! getent group whatpulse ; then
-  printf "You must have and be in the 'input' group to use WhatPulse"
-  printf "   # groupadd -g 242 input"
+if ! getent group $WHATPULSE_GROUP; then
+  printf "You must have and be in the '${WHATPULSE_GROUP}' group to use WhatPulse"
+  printf "   # groupadd -g 242 $WHATPULSE_GROUP"
   exit 1
 fi
 
@@ -57,21 +59,15 @@ set -e
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
-cd $PKG
-tar xvf $CWD/$PRGNAM-Linux$PKG_ARCH-$VERSION.tar.gz
-chown -R root:root .
 
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
- -exec chmod 755 {} \; -o \
- \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
- -exec chmod 644 {} \;
+mkdir -p $PKG/usr/bin
+tar xf $CWD/$PRGNAM-Linux$PKG_ARCH-$VERSION.tar.gz -C $PKG/usr/bin
+chown root:whatpulse $PKG/usr/bin/WhatPulse
+chmod 0750 $PKG/usr/bin/WhatPulse
 
-mkdir -p usr/bin
-mv WhatPulse usr/bin/.
-
-mkdir -p etc/udev/rules.d
-cat $CWD/99-whatpulse-input.rules > $PKG/etc/udev/rules.d/99-whatpulse-input.rules
+mkdir -p $PKG/lib/udev/rules.d
+echo "KERNEL==\"event*\", NAME=\"input/%k\", MODE=\"640\", GROUP=\"${WHATPULSE_GROUP}\"" \
+  > $PKG/lib/udev/rules.d/99-whatpulse-input.rules
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc

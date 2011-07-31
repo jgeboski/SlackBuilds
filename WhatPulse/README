@@ -4,16 +4,5 @@ statistics are pulsed and compiled into a nice view on whatpulse.org.
 
 You'll need to add the group 'input' before installing this package.
 
-# groupadd input
-
-You must add any users you want to be able to use WhatPulse with to
-the group 'input'.
-
-# gpasswd -a username input
-
-If do not want to restart to apply the udev permissions, you can run:
-(Keep in mind this will apply read permissions for all users)
-
-# chmod 644 /dev/input/event*
-
-You'll need to have Qt installed.
+You can optionally change the group name from 'input'.
+WHATPULSE_GROUP=groupname ./WhatPulse.SlackBuild
