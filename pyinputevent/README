@@ -1,0 +1,4 @@
+PyInputEvent provides a python interface to Linux's input subsystem
+using the `/dev/input/event*` devices, as well as providing a means
+to pass new events to the input subsystem using the `uinput` kernel
+module and `/dev/uinput`.

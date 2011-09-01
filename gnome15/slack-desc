@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+       |-----handy-ruler------------------------------------------------------|
+gnome15: gnome15 (Desktop Integration for Logitech gaming keyboard(s))
+gnome15:
+gnome15: Gnome15 provides a panel indicator (or applet), configuration tool,
+gnome15: macro system and plugin framework for the Logitech G series
+gnome15: keyboards, including the G15 and G19. The intention is to provide
+gnome15: the best integration with the Linux desktop possible, using the
+gnome15: standard protocols and libraries where appropriate.
+gnome15:
+gnome15:
+gnome15: Homepage: http://www.gnome15.org/
+gnome15:
