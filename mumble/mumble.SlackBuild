@@ -84,6 +84,7 @@ find . \
  -exec chmod 644 {} \;
 
 qmake \
+  -recursive \
   main.pro \
   DEFINES*="PLUGIN_PATH=/usr/lib${LIBDIRSUFFIX}/mumble" \
   CONFIG+=no-server \
@@ -96,37 +97,43 @@ qmake \
   CONFIG+=no-ice \
   CONFIG+=no-bonjour \
   $BUILD_G15 \
-  $BUILD_OVERLAY \
-  -recursive
+  $BUILD_OVERLAY
 
 make release
 
 mkdir -p \
   $PKG/usr/bin \
   $PKG/usr/lib${LIBDIRSUFFIX}/mumble \
-  $PKG/usr/man \
-  $PKG/usr/share/applications \
-  $PKG/usr/share/pixmaps \
+  $PKG/usr/man/man1 \
+  $PKG/usr/share/{applications,pixmaps}
 
-if [ -e $PKG/usr/lib${LIBDIRSUFFIX}/libmumble.so ]; then
-  cp release/libmumble.so* \
-     $PKG/usr/lib${LIBDIRSUFFIX}
+install -m 755 \
+  release/mumble \
+  release/mumble11x \
+ $PKG/usr/bin
+
+install -m 644 \
+  man/mumble-overlay.1 \
+  man/mumble.1 \
+  man/mumble11x.1 \
+ $PKG/usr/man/man1
+
+install -m 644 scripts/mumble.desktop $PKG/usr/share/applications
+install -m 644 icons/mumble.xpm $PKG/usr/share/pixmaps
+
+find release/plugins -type f -name *.so -exec \
+  install -m 755 {} $PKG/usr/lib${LIBDIRSUFFIX}/mumble \;
+
+# If the overlay was built, let's install the library for it
+if [ -e release/libmumble.so.$VERSION ]; then
+  install -m 755 release/libmumble.so.$VERSION $PKG/usr/lib${LIBDIRSUFFIX}
+  
+  cd $PKG/usr/lib${LIBDIRSUFFIX}
+    ln -sf libmumble.so.$VERSION libmumble.so.1.2
+    ln -sf libmumble.so.1.2 libmumble.so.1
+    ln -sf libmumble.so.1 libmumble.so
+  cd -
 fi
-
-cp release/plugins/* \
-   $PKG/usr/lib${LIBDIRSUFFIX}/mumble
-cp release/mumble \
-   release/mumble11x \
-   $PKG/usr/bin
-cp man/mumble-overlay.1 \
-   man/mumble.1 \
-   man/mumble11x.1 \
-   $PKG/usr/man
-cp $CWD/mumble.desktop \
-   $CWD/mumble11x.desktop \
-   $PKG/usr/share/applications
-cp $CWD/mumble.xpm \
-   $PKG/usr/share/pixmaps
 
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
@@ -136,10 +143,7 @@ for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; r
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  CHANGES \
-  LICENSE \
-  README \
-  README.Linux \
+  CHANGES LICENSE README README.Linux \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
