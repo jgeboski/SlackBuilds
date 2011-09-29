@@ -1,0 +1,10 @@
+Monitorix is a free, open source, lightweight system monitoring tool
+designed to monitor as many services and system resources as possible.
+It has been created to be used under production UNIX/Linux servers, but
+due to its simplicity and small size you may also use it on embedded
+devices as well.
+
+DOCROOT can be set to override the default web directory of:
+/var/www/htdocs/monitorix
+
+This package requires: rrdtool
