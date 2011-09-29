@@ -108,21 +108,18 @@ mkdir -p \
   $PKG/usr/share/{applications,pixmaps}
 
 install -m 755 \
-  release/mumble \
-  release/mumble11x \
+  release/mumble release/mumble11x \
  $PKG/usr/bin
 
 install -m 644 \
-  man/mumble-overlay.1 \
-  man/mumble.1 \
-  man/mumble11x.1 \
+  man/mumble-overlay.1 man/mumble.1 man/mumble11x.1 \
  $PKG/usr/man/man1
 
 install -m 644 scripts/mumble.desktop $PKG/usr/share/applications
 install -m 644 icons/mumble.xpm $PKG/usr/share/pixmaps
 
-find release/plugins -type f -name *.so -exec \
-  install -m 755 {} $PKG/usr/lib${LIBDIRSUFFIX}/mumble \;
+find release/plugins -type f -name *.so \
+  -exec install -m 755 {} $PKG/usr/lib${LIBDIRSUFFIX}/mumble \;
 
 # If the overlay was built, let's install the library for it
 if [ -e release/libmumble.so.$VERSION ]; then
