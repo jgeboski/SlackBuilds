@@ -83,6 +83,11 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+# As of celt-0.11.0, the macro CELT_SET_VBR_RATE has been renamed to
+# CELT_SET_BITRATE. Please make sure you have at least celt 0.11.0,
+# if not comment the line below out.
+sed -i 's/CELT_SET_VBR_RATE/CELT_SET_BITRATE/' src/mumble/AudioInput.cpp
+
 qmake \
   -recursive \
   main.pro \
