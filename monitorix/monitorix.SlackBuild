@@ -66,7 +66,7 @@ mkdir -p \
   $PKG/usr/man/man5 \
   $PKG/usr/man/man8 \
   $PKG/var/lib/monitorix \
-  $PKG/$DOCROOT
+  $PKG/$DOCROOT/monitorix-cgi
 
 install -m 644 monitorix.conf $PKG/etc/monitorix.conf.new
 install -m 644 monitorix.init $PKG/etc/rc.d/rc.monitorix
@@ -89,6 +89,7 @@ find $PKG \
 chown -R $WWW_USER:$WWW_GROUP $PKG/$DOCROOT
 
 sed -i "s,/usr/share/monitorix/,$DOCROOT/," $PKG/etc/monitorix.conf.new
+sed -i "s,\"/monitorix\",\"\"," $PKG/etc/monitorix.conf.new
 
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
