@@ -2,4 +2,5 @@
 
 java \
     -Xincgc -Xms512M -Xmx1G \
+    $1 \
     -jar /usr/share/minecraft/minecraft.jar
