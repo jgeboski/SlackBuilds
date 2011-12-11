@@ -6,7 +6,7 @@
 # customary to leave one space after the ':' except on otherwise blank lines.
 
          |-----handy-ruler------------------------------------------------------|
-monitorix: Monitorix (short description of app)
+monitorix: Monitorix (lightweight system monitor)
 monitorix:
 monitorix: Monitorix is a free, open source, lightweight system monitoring tool
 monitorix: designed to monitor as many services and system resources as
