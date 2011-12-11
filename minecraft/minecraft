@@ -1,0 +1,5 @@
+#!/bin/sh
+
+java \
+    -Xincgc -Xms512M -Xmx1G \
+    -jar /usr/share/minecraft/minecraft.jar

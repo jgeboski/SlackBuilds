@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Minecraft
+Comment=Minecraft
+Categories=Application;Game;
+Exec=minecraft
+Icon=minecraft
+Terminal=false
+StartupNotify=false
