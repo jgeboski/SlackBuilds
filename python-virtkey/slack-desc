@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+              |-----handy-ruler------------------------------------------------------|
+python-virtkey: python-virtkey (python virtual key extension)
+python-virtkey:
+python-virtkey: A python extension for emulating keypresses and getting laying
+python-virtkey: information from the X server.
+python-virtkey:
+python-virtkey:
+python-virtkey:
+python-virtkey:
+python-virtkey:
+python-virtkey: Homepage: https://launchpad.net/python-virtkey/
+python-virtkey:
