@@ -1,0 +1,4 @@
+Uinput allows attaching user-space device drivers into the Linux
+kernel. As magnificient as the uinput-system is, it is pretty low
+level from the application developers perspective. Libsuinput
+provides a set of helper functions and hides many devilish details.
