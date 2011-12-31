@@ -4,4 +4,4 @@ including the G15 and G19. The intention is to provide the best
 integration with the Linux desktop possible, using the standard
 protocols and libraries where appropriate.
 
-
+This package requires: pyinputevent, python-uinput, and python-virtkey
