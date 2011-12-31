@@ -24,7 +24,7 @@
 
 PRGNAM=gnome15-plugins
 
-VERSION=${VERSION:-0.7.1}
+VERSION=${VERSION:-0.7.10}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -81,12 +81,7 @@ make install DESTDIR=$PKG
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  AUTHORS \
-  ChangeLog \
-  COPYING \
-  INSTALL \
-  NEWS \
-  README \
+  AUTHORS ChangeLog COPYING INSTALL NEWS README \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
