@@ -1,10 +1,8 @@
 PRGNAM="gnome15"
-VERSION="0.7.11"
+VERSION="0.8.2"
 HOMEPAGE="http://www.gnome15.org/"
-DOWNLOAD="http://www.gnome15.org/downloads/Gnome15/Required/gnome15-0.7.11.tar.gz \
-          http://www.gnome15.org/downloads/Gnome15/Old/lgsetled-0.0.2.tar.gz"
-MD5SUM="19802718cc1780218a51e9c21cdfb856 \
-        f2387b213947a8f679bb4eeaf8846ae3"
+DOWNLOAD="http://www.gnome15.org/downloads/Gnome15/Required/gnome15-0.8.2.tar.gz"
+MD5SUM="b406a0cd3ad67b8d420436d32e52db40"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
 MAINTAINER="James Geboski"
