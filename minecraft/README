@@ -2,4 +2,9 @@ Minecraft is a sandbox building game where a player builds in a
 world made of blocks. A player can destroy and place blocks to
 create almost anything imaginable.
 
+By default, this script allocates 1G of memory to java. To
+increase the memory:
+
+    # MEMORY=2G ./minecraft.SlackBuild
+
 At runtime minecraft requires java (jre, jdk, or openjdk).
