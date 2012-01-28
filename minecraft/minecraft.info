@@ -1,5 +1,5 @@
 PRGNAM="minecraft"
-VERSION="1.0.0"
+VERSION="1.1"
 HOMEPAGE="http://www.minecraft.net/"
 DOWNLOAD="https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft.jar"
 MD5SUM="6e053e85cd4920f7aaf26c4455b50ce7"
