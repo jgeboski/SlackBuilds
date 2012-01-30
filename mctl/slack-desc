@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+    |-----handy-ruler------------------------------------------------------|
+mctl: MCTL (Minecraft Server Controller)
+mctl:
+mctl: MCTL is a set of python scripts/modules that aim to automate and
+mctl: simplify the process of running of a Minecraft server.
+mctl:
+mctl:
+mctl:
+mctl:
+mctl:
+mctl: Homepage: https://github.com/jgeboski/mctl/
+mctl:
