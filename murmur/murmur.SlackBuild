@@ -23,6 +23,23 @@ TMP=${TMP:-/tmp/SBo}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
+MURMUR_GROUP=${MURMUR_GROUP:-murmur}
+MURMUR_USER=${MURMUR_USER:-murmur}
+
+if ! getent group $MURMUR_GROUP; then
+  echo "Group $MURMUR_GROUP does not exist. Create it with:"
+  echo "  # groupadd -g 261 $MURMUR_GROUP"
+  echo""
+  exit 1
+fi
+
+if ! getent passwd $MURMUR_USER; then
+  echo "User $MURMUR_USER does not exist. Create it with:"
+  echo "  # useradd -g $MURMUR_GROUP -u 261 -d /var/lib/mumble-server -s /bin/false $MURMUR_USER"
+  echo ""
+  exit 1
+fi
+
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
   LIBDIRSUFFIX=""
@@ -62,14 +79,20 @@ qmake \
 
 make release
 
-mkdir -p $PKG/usr/bin \
+mkdir -p \
   $PKG/etc \
-  $PKG/var/lib/mumble-server \
-  $PKG/var/run/mumble-server \
-  $PKG/var/log/mumble-server
+  $PKG/usr/bin \
+  $PKG/var/{lib,log,run}/mumble-server
+
 install -m 0755 ./release/murmurd $PKG/usr/bin
 install -m 0644 ./scripts/murmur.ini.system $PKG/etc/murmur.ini.new
 strip --strip-unneeded $PKG/usr/bin/* 2>/dev/null || true
+
+chown root:$MURMUR_GROUP $PKG/etc/murmur.ini.new
+chmod o-rwx $PKG/etc/murmur.ini.new
+
+chown $MURMUR_USER:$MURMUR_GROUP $PKG/var/{lib,log,run}/mumble-server
+chmod o-rwx $PKG/var/lib/mumble-server
 
 mkdir -p $PKG/usr/man/man1
 install -m 0644 ./man/murmurd.1 $PKG/usr/man/man1
