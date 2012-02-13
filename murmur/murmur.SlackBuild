@@ -4,7 +4,7 @@
 
 PRGNAM=murmur
 SRCNAM=mumble
-VERSION=${VERSION:-1.1.4}
+VERSION=${VERSION:-1.2.3}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -53,10 +53,14 @@ find . \
  -exec chmod 644 {} \;
 
 qmake \
+  -recursive \
   main.pro \
-  CONFIG+=no-client
+  CONFIG+=no-update \
+  CONFIG+=no-client \
+  CONFIG+=no-ice \
+  CONFIG+=no-bonjour
 
-make
+make release
 
 mkdir -p $PKG/usr/bin \
   $PKG/etc \
