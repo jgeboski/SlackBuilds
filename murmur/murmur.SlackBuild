@@ -80,26 +80,31 @@ qmake \
 make release
 
 mkdir -p \
-  $PKG/etc/rc.d \
+  $PKG/etc/{logrotate.d,rc.d} \
   $PKG/usr/bin \
   $PKG/usr/man/man1 \
   $PKG/var/{lib,log,run}/$PRGNAM
 
-install -m 644 scripts/murmur.ini.system $PKG/etc/$PRGNAM.ini.new
-install -m 644 $CWD/rc.$PRGNAM           $PKG/etc/rc.d/rc.$PRGNAM.new
-install -m 644 $CWD/$PRGNAM.logrotate    $PKG/etc/logrotate.d/$PRGNAM.new
-install -m 755 release/murmurd           $PKG/usr/bin
-install -m 644 man/murmurd.1             $PKG/usr/man/man1
+install -m 644 $CWD/rc.$PRGNAM $PKG/etc/rc.d/rc.$PRGNAM.new
+install -m 755 release/murmurd $PKG/usr/bin
+install -m 644 man/murmurd.1   PKG/usr/man/man1
 
-function setvar() {
-  sed -i "s,$1=.*,$1=$2," "$3"
-}
+sed \
+  -e "s,database=.*,database=/var/lib/$PRGNAM/$PRGNAM.sqlite," \
+  -e "s,logfile=.*,logfile=/var/log/$PRGNAM/$PRGNAM.log," \
+  -e "s,pidfile=.*,pidfile=/var/run/$PRGNAM/$PRGNAM.pid," \
+  -e "s,uname=.*,uname=$MURMUR_USER," \
+ scripts/murmur.ini.system > $PKG/etc/$PRGNAM.ini.new
 
-setvar database /var/lib/$PRGNAM/$PRGNAM.sqlite $PKG/etc/$PRGNAM.ini.new
-setvar logfile  /var/log/$PRGNAM/$PRGNAM.log    $PKG/etc/$PRGNAM.ini.new
-setvar pidfile  /var/run/$PRGNAM/$PRGNAM.pid    $PKG/etc/$PRGNAM.ini.new
-setvar PIDFILE  /var/run/$PRGNAM/$PRGNAM.pid    $PKG/etc/rc.d/rc.$PRGNAM.new
-setvar uname    $MURMUR_USER                    $PKG/etc/$PRGNAM.ini.new
+sed \
+  -i "s,PIDFILE=.*,PIDFILE=/var/run/$PRGNAM/$PRGNAM.pid," \
+ $PKG/etc/rc.d/rc.$PRGNAM.new
+
+sed \
+  -e "s,@LOGFILE@,/var/log/$PRGNAM/$PRGNAM.log," \
+  -e "s,@USER@,$MURMUR_USER," \
+  -e "s,@GROUP@,$MURMUR_GROUP," \
+ $CWD/$PRGNAM.logrotate > $PKG/etc/logrotate.d/$PRGNAM.new
 
 chown root:$MURMUR_GROUP $PKG/etc/$PRGNAM.ini.new
 chmod o-rwx $PKG/etc/murmur.ini.new

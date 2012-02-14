@@ -22,5 +22,6 @@ else
   chmod 0755 etc/rc.d/rc.murmur.new
 fi
 
-config etc/rc.d/rc.murmur.new
+config etc/logrotate.d/murmur.new
 config etc/murmur.ini.new
+config etc/rc.d/rc.murmur.new
