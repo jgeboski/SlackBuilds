@@ -80,25 +80,28 @@ qmake \
 make release
 
 mkdir -p \
-  $PKG/etc \
+  $PKG/etc/rc.d \
   $PKG/usr/bin \
   $PKG/usr/man/man1 \
   $PKG/var/{lib,log,run}/$PRGNAM
 
+install -m 644 scripts/murmur.ini.system $PKG/etc/$PRGNAM.ini.new
+install -m 644 $CWD/rc.$PRGNAM           $PKG/etc/rc.d/rc.$PRGNAM.new
+install -m 644 $CWD/$PRGNAM.logrotate    $PKG/etc/logrotate.d/$PRGNAM.new
 install -m 755 release/murmurd           $PKG/usr/bin
 install -m 644 man/murmurd.1             $PKG/usr/man/man1
-install -m 644 scripts/murmur.ini.system $PKG/etc/murmur.ini.new
 
 function setvar() {
   sed -i "s,$1=.*,$1=$2," "$3"
 }
 
-setvar database /var/lib/$PRGNAM/$PRGNAM.sqlite $PKG/etc/murmur.ini.new
-setvar logfile  /var/log/$PRGNAM/$PRGNAM.log    $PKG/etc/murmur.ini.new
-setvar pidfile  /var/run/$PRGNAM/$PRGNAM.pid    $PKG/etc/murmur.ini.new
-setvar uname    $MURMUR_USER                    $PKG/etc/murmur.ini.new
+setvar database /var/lib/$PRGNAM/$PRGNAM.sqlite $PKG/etc/$PRGNAM.ini.new
+setvar logfile  /var/log/$PRGNAM/$PRGNAM.log    $PKG/etc/$PRGNAM.ini.new
+setvar pidfile  /var/run/$PRGNAM/$PRGNAM.pid    $PKG/etc/$PRGNAM.ini.new
+setvar PIDFILE  /var/run/$PRGNAM/$PRGNAM.pid    $PKG/etc/rc.d/rc.$PRGNAM.new
+setvar uname    $MURMUR_USER                    $PKG/etc/$PRGNAM.ini.new
 
-chown root:$MURMUR_GROUP $PKG/etc/murmur.ini.new
+chown root:$MURMUR_GROUP $PKG/etc/$PRGNAM.ini.new
 chmod o-rwx $PKG/etc/murmur.ini.new
 
 chown $MURMUR_USER:$MURMUR_GROUP $PKG/var/{lib,log,run}/$PRGNAM
@@ -116,10 +119,9 @@ cp -a \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
-mkdir -p $PKG/install $PKG/etc/rc.d
+mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
-cat $CWD/rc.murmur > $PKG/etc/rc.d/rc.murmur.new
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
