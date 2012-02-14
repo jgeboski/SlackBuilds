@@ -87,7 +87,7 @@ mkdir -p \
 
 install -m 644 $CWD/rc.$PRGNAM $PKG/etc/rc.d/rc.$PRGNAM.new
 install -m 755 release/murmurd $PKG/usr/bin
-install -m 644 man/murmurd.1   PKG/usr/man/man1
+install -m 644 man/murmurd.1   $PKG/usr/man/man1
 
 sed \
   -e "s,database=.*,database=/var/lib/$PRGNAM/$PRGNAM.sqlite," \
