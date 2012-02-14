@@ -35,7 +35,7 @@ fi
 
 if ! getent passwd $MURMUR_USER; then
   echo "User $MURMUR_USER does not exist. Create it with:"
-  echo "  # useradd -g $MURMUR_GROUP -u 261 -d /var/lib/mumble-server -s /bin/false $MURMUR_USER"
+  echo "  # useradd -g $MURMUR_GROUP -u 261 -d /var/lib/$PRGNAM -s /bin/false $MURMUR_USER"
   echo ""
   exit 1
 fi
@@ -82,25 +82,39 @@ make release
 mkdir -p \
   $PKG/etc \
   $PKG/usr/bin \
-  $PKG/var/{lib,log,run}/mumble-server
+  $PKG/usr/man/man1 \
+  $PKG/var/{lib,log,run}/$PRGNAM
 
-install -m 0755 ./release/murmurd $PKG/usr/bin
-install -m 0644 ./scripts/murmur.ini.system $PKG/etc/murmur.ini.new
-strip --strip-unneeded $PKG/usr/bin/* 2>/dev/null || true
+install -m 755 release/murmurd           $PKG/usr/bin
+install -m 644 man/murmurd.1             $PKG/usr/man/man1
+install -m 644 scripts/murmur.ini.system $PKG/etc/murmur.ini.new
+
+function setvar() {
+  sed -i "s,$1=.*,$1=$2," "$3"
+}
+
+setvar database /var/lib/$PRGNAM/$PRGNAM.sqlite $PKG/etc/murmur.ini.new
+setvar logfile  /var/log/$PRGNAM/$PRGNAM.log    $PKG/etc/murmur.ini.new
+setvar pidfile  /var/run/$PRGNAM/$PRGNAM.pid    $PKG/etc/murmur.ini.new
+setvar uname    $MURMUR_USER                    $PKG/etc/murmur.ini.new
 
 chown root:$MURMUR_GROUP $PKG/etc/murmur.ini.new
 chmod o-rwx $PKG/etc/murmur.ini.new
 
-chown $MURMUR_USER:$MURMUR_GROUP $PKG/var/{lib,log,run}/mumble-server
-chmod o-rwx $PKG/var/lib/mumble-server
+chown $MURMUR_USER:$MURMUR_GROUP $PKG/var/{lib,log,run}/$PRGNAM
+chmod o-rwx $PKG/var/lib/$PRGNAM
 
-mkdir -p $PKG/usr/man/man1
-install -m 0644 ./man/murmurd.1 $PKG/usr/man/man1
-gzip -9 $PKG/usr/man/man1/*
+find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
-DOCS="CHANGES INSTALL LICENSE README README.Linux $CWD/$PRGNAM.SlackBuild"
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-install -m 0644 $DOCS $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a \
+  CHANGES INSTALL LICENSE README README.Linux \
+  $PKG/usr/doc/$PRGNAM-$VERSION
+cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install $PKG/etc/rc.d
 cat $CWD/slack-desc > $PKG/install/slack-desc
