@@ -1,8 +1,0 @@
-Logitech For Linux, or LG4L, is a set of kernel modules aiming to
-add support for Logitech's Gaming Series devices.
-
-You can build the LG4L modules for a different kernel:
-  KERNEL=3.0.0 ./lg4l.SlackBuild
-
-You can build the LG4L modules with a different build path:
-  KERNELPATH=/lib/modules/3.0.0/build ./lg4l.SlackBuild
