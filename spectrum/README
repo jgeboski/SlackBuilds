@@ -1,6 +1,0 @@
-Spectrum is an XMPP transport/gateway. It allows XMPP users to
-communicate with their friends who are using one of the supported
-networks. Spectrum is open source and released under the GNU GPL.
-
-Defaultly, this script uses the user 'spectrum'.  You can change this
-by running: SPECTRUM_USER=username ./spectrum.SlackBuild
