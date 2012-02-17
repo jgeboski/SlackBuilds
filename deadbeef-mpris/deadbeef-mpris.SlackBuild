@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=deadbeef-mpris
-VERSION=${VERSION:-6dd6032}
+VERSION=${VERSION:-git}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -59,9 +59,13 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/kernelhcy-DeaDBeeF-MPRIS-plugin-$VERSION.tar.gz
-cd kernelhcy-DeaDBeeF-MPRIS-plugin-$VERSION
+
+rm -rf $PRGNAM-git
+git clone https://github.com/kernelhcy/DeaDBeeF-MPRIS-plugin.git $PRGNAM-git
+cd $PRGNAM-git
+
+VERSION=$(git rev-parse --short=7 HEAD)
+
 chown -R root:root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
