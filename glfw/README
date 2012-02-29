@@ -1,0 +1,4 @@
+GLFW is a free, Open Source, multi-platform library for opening a
+window, creating an OpenGL context and managing input. It is easy to
+integrate into existing applications and does not lay claim to the
+main loop.
