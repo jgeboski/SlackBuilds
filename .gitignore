@@ -3,4 +3,5 @@
 *.tar.bz2
 *.tgz
 *.txz
+*.zip
 linux-config
