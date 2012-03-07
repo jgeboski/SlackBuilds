@@ -24,7 +24,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=wine
-VERSION=${VERSION:-1.2.3}
+VERSION=${VERSION:-1.4}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -40,18 +40,6 @@ CWD=$(pwd)
 TMP=${TMP:-/tmp/SBo}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
-
-# Some user reports indicate that wine and IE don't always get along
-# and that this might fix it.  The wine team doesn't agree that it's
-# the right thing to do, but it's your call.
-IEFIX=${IEFIX:-NO}
-
-# If your video card does not support hardware accelerated OpenGL,
-# the run the script like:   OPENGL=NO ./wine.SlackBuild
-OPENGL=${OPENGL:-YES}
-
-# This patch is for Fallout3. It may conflict with other apps though.
-FALLOUT3=${FALLOUT3:-NO}
 
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -81,37 +69,13 @@ find . \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
-
-# If IEFIX != NO above, then reverse the patch
-if [ "$IEFIX" != "NO" ]; then
-  patch -p1 -R --verbose < $CWD/IE_fix_maybe.patch
-fi
-
-# If OPENGL=YES above, then enable opengl; otherwise, disable it.
-if [ "$OPENGL" = "YES" ]; then
-    do_opengl="with"
-  else
+ 
+if [ "$OPENGL" = "no" ]; then
     do_opengl="without"
+  else
+    do_opengl="with"
 fi
 
-# If FALLOUT3=YES then apply patch.
-if [ "$FALLOUT3" = "YES" ]; then
-	patch --verbose -p1 < $CWD/fallout3.diff
-fi
-
-# If DIB=YES then apply DIB patches.
-if [ "$DIB" = "YES" ]; then
-	mkdir dib
-	cd dib
-	unzip $CWD/dibeng-max-2010-11-12.zip
-	cd ..
-	for i in $(grep dib dib/series); do
-			patch -p1 < dib/$i
-	done
-	autoconf
-fi
-
-# All of the libraries produced are 32bit libs anyway
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
