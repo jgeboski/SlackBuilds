@@ -29,7 +29,6 @@ JENKINS_LOG_FILE="/var/log/jenkins/jenkins.log"
 JENKINS_CONSOLELOG_FILE="/var/log/jenkins/jenkins_console.log"
 JENKINS_PID_DIR="/var/run/jenkins/"
 JENKINS_PID_FILE="$JENKINS_PID_DIR/jenkins.pid"
-JENKINS_WEBAPPSDIR="/var/lib/jenkins/apps/"
 JENKINS_WEBROOT="/var/lib/jenkins/webroot/"
 JENKINS_HOME="/var/lib/jenkins"
 OPT_ARGS=""
@@ -83,10 +82,6 @@ if [ "$JENKINS_LOG_FILE" != "" ] ; then
   JENKINS_LOG_FILE_ARG="--logfile=$JENKINS_LOG_FILE"
 fi
 
-if [ "$JENKINS_WEBAPPSDIR" != "" ] ; then
-  JENKINS_WEBAPPSDIR_ARG="--webapssDir=$JENKINS_WEBAPPSDIR"
-fi
-
 if [ "$JENKINS_WEBROOT" != "" ] ; then
   JENKINS_WEBROOT_ARG="--webroot=$JENKINS_WEBROOT"
 fi
@@ -107,7 +102,6 @@ su - $JENKINS_USER -c " \
       	$JENKINS_HTTPS_KEYSTORE_PASSWORD_ARG \
       	$JENKINS_HTTPS_KEY_MANAGER_ARG \
       	$JENKINS_LOG_FILE_ARG \
-      	$JENKINS_WEBAPPSDIR_ARG \
       	$JENKINS_WEBROOT_ARG \
       	$OPT_ARGS \
 	</dev/null >> $JENKINS_CONSOLELOG_FILE 2>&1 &
