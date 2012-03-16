@@ -20,9 +20,6 @@ preserve_perms() {
 }
 
 preserve_perms etc/rc.d/rc.jenkins.new
-config etc/jenkins/jenkins.conf.new
+config etc/jenkins.conf.new
 config etc/logrotate.d/jenkins.new
-config var/log/jenkins/jenkins.log.new
-config var/log/jenkins/jenkins_console.log.new
-rm -f var/log/jenkins/*.new
 

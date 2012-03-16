@@ -24,18 +24,17 @@
 JAVA=$(which java)
 JENKINS="/usr/share/jenkins/jenkins.war"
 JENKINS_USER="jenkins"
-JENKINS_HTTP_PORT="8080"
+JENKINS_HOME="/var/lib/jenkins"
 JENKINS_LOG_FILE="/var/log/jenkins/jenkins.log"
 JENKINS_CONSOLELOG_FILE="/var/log/jenkins/jenkins_console.log"
-JENKINS_PID_DIR="/var/run/jenkins/"
-JENKINS_PID_FILE="$JENKINS_PID_DIR/jenkins.pid"
-JENKINS_WEBROOT="/var/lib/jenkins/webroot/"
-JENKINS_HOME="/var/lib/jenkins"
+JENKINS_PID_FILE="/var/run/jenkins/jenkins.pid"
+JENKINS_HTTP_PORT="8080"
+JENKINS_WEBROOT="$JENKINS_HOME"
 OPT_ARGS=""
 
 # Override some of the above settings, if defined in jenkins.conf
-if [ -f /etc/jenkins/jenkins.conf ] ; then
-  . /etc/jenkins/jenkins.conf
+if [ -f /etc/jenkins.conf ] ; then
+  . /etc/jenkins.conf
 fi
 
 export JENKINS_HOME
@@ -46,68 +45,66 @@ if [ ! "$PREV_PID" = "" ] ; then
   exit 1
 fi
 
-if [ "$JENKINS_PREFIX" != "" ] ; then
+if [ -n "$JENKINS_PREFIX" ] ; then
   JENKINS_PREFIX_ARG="--prefix=$JENKINS_PREFIX"
 fi
 
-if [ "$JENKINS_HTTP_PORT" != "" ] ; then
-  JENKINS_HTTP_PORT_ARG="--httpPort=$JENKINS_HTTP_PORT"
-fi
-
-if [ "$JENKINS_HTTP_LISTENING_ADDRESS" != "" ] ; then
-  JENKINS_HTTP_LISTENING_ADDRESS_ARG="--httpListenAddress=$JENKINS_HTTP_LISTENING_ADDRESS"
-fi
-
-if [ "$JENKINS_HTTPS_PORT" != "" ] ; then
-  JENKINS_HTTPS_PORT_ARG="--httpsPort=$JENKINS_HTTPS_PORT"
-fi
-
-if [ "$JENKINS_HTTPS_LISTENING_ADDRESS" != "" ] ; then
-  JENKINS_HTTPS_LISTENING_ADDRESS_ARG="--httpsListenAddress=$JENKINS_HTTPS_LISTENING_ADDRESS"
-fi
-
-if [ "$JENKINS_HTTPS_KEYSTORE" != "" ] ; then
-  JENKINS_HTTPS_KEYSTORE_ARG="--httpsKeyStore=$JENKINS_HTTPS_KEYSTORE"
-fi
-
-if [ "$JENKINS_HTTPS_KEYSTORE_PASSWORD" != "" ] ; then
-  JENKINS_HTTPS_KEYSTORE_PASSWORD_ARG="--httpsKeyStorePassword=$JENKINS_HTTPS_KEYSTORE_PASSWORD"
-fi
-
-if [ "$JENKINS_HTTPS_KEY_MANAGER" != "" ] ; then
-  JENKINS_HTTPS_KEY_MANAGER_ARG="--httpsKeyManagerType=$JENKINS_HTTPS_KEY_MANAGER"
-fi
-
-if [ "$JENKINS_LOG_FILE" != "" ] ; then
+if [ -n "$JENKINS_LOG_FILE" ] ; then
   JENKINS_LOG_FILE_ARG="--logfile=$JENKINS_LOG_FILE"
 fi
 
-if [ "$JENKINS_WEBROOT" != "" ] ; then
+if [ -n "$JENKINS_HTTP_PORT" ] ; then
+  JENKINS_HTTP_PORT_ARG="--httpPort=$JENKINS_HTTP_PORT"
+fi
+
+if [ -n "$JENKINS_HTTP_LISTENING_ADDRESS" ] ; then
+  JENKINS_HTTP_LISTENING_ADDRESS_ARG="--httpListenAddress=$JENKINS_HTTP_LISTENING_ADDRESS"
+fi
+
+if [ -n "$JENKINS_HTTPS_PORT" ] ; then
+  JENKINS_HTTPS_PORT_ARG="--httpsPort=$JENKINS_HTTPS_PORT"
+fi
+
+if [ -n "$JENKINS_HTTPS_LISTENING_ADDRESS" ] ; then
+  JENKINS_HTTPS_LISTENING_ADDRESS_ARG="--httpsListenAddress=$JENKINS_HTTPS_LISTENING_ADDRESS"
+fi
+
+if [ -n "$JENKINS_HTTPS_KEYSTORE" ] ; then
+  JENKINS_HTTPS_KEYSTORE_ARG="--httpsKeyStore=$JENKINS_HTTPS_KEYSTORE"
+fi
+
+if [ -n "$JENKINS_HTTPS_KEYSTORE_PASSWORD" ] ; then
+  JENKINS_HTTPS_KEYSTORE_PASSWORD_ARG="--httpsKeyStorePassword=$JENKINS_HTTPS_KEYSTORE_PASSWORD"
+fi
+
+if [ -n "$JENKINS_HTTPS_KEY_MANAGER" ] ; then
+  JENKINS_HTTPS_KEY_MANAGER_ARG="--httpsKeyManagerType=$JENKINS_HTTPS_KEY_MANAGER"
+fi
+
+if [ -n "$JENKINS_WEBROOT" ] ; then
   JENKINS_WEBROOT_ARG="--webroot=$JENKINS_WEBROOT"
 fi
+
+JENKINS_PID_DIR=$(dirname $JENKINS_PID_FILE)
 
 mkdir -p $JENKINS_PID_DIR
 chown $JENKINS_USER $JENKINS_PID_DIR
 
 su - $JENKINS_USER -c " \
-	JENKINS_HOME=$JENKINS_HOME \
-	exec setsid \
-	$JAVA -jar $JENKINS \
-      	$JENKINS_HTTP_PORT_ARG \
-      	$JENKINS_HTTP_LISTENING_ADDRESS_ARG \
-      	$JENKINS_HTTPS_PORT_ARG \
-      	$JENKINS_PREFIX_ARG \
-      	$JENKINS_HTTPS_LISTENING_ADDRESS_ARG \
-      	$JENKINS_HTTPS_KEYSTORE_ARG \
-      	$JENKINS_HTTPS_KEYSTORE_PASSWORD_ARG \
-      	$JENKINS_HTTPS_KEY_MANAGER_ARG \
-      	$JENKINS_LOG_FILE_ARG \
-      	$JENKINS_WEBROOT_ARG \
-      	$OPT_ARGS \
-	</dev/null >> $JENKINS_CONSOLELOG_FILE 2>&1 &
-	
-	echo \$! > $JENKINS_PID_FILE
-	disown \$!
-
-	"
-
+  JENKINS_HOME=$JENKINS_HOME \
+  exec setsid \
+    $JAVA -jar $JENKINS \
+    $JENKINS_PREFIX_ARG \
+    $JENKINS_LOG_FILE_ARG \
+    $JENKINS_HTTP_PORT_ARG \
+    $JENKINS_HTTP_LISTENING_ADDRESS_ARG \
+    $JENKINS_HTTPS_LISTENING_ADDRESS_ARG \
+    $JENKINS_HTTPS_KEYSTORE_ARG \
+    $JENKINS_HTTPS_KEYSTORE_PASSWORD_ARG \
+    $JENKINS_HTTPS_KEY_MANAGER_ARG \
+    $JENKINS_WEBROOT_ARG \
+    $OPT_ARGS \
+  </dev/null >> $JENKINS_CONSOLELOG_FILE 2>&1 &
+  
+  echo \$! > $JENKINS_PID_FILE
+  disown \$!"
