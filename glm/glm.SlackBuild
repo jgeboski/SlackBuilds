@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=glm
-VERSION=${VERSION:-0.9.3.1}
+VERSION=${VERSION:-0.9.3.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -34,10 +34,12 @@ OUTPUT=${OUTPUT:-/tmp}
 
 set -e
 
-rm -rf $PKG $TMP/$PRGNAM-$VERSION
-mkdir -p $PKG $OUTPUT $TMP/$PRGNAM-$VERSION
-cd $TMP/$PRGNAM-$VERSION
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $PRGNAM-$VERSION
 unzip $CWD/$PRGNAM-$VERSION.zip
+cd $PRGNAM-$VERSION
 
 mkdir -p $PKG/usr/include
 cp -R glm $PKG/usr/include
