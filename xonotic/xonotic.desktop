@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Xonotic
+Comment=Xonotic
+Categories=Application;Game;
+Exec=xonotic-sdl
+Icon=xonotic
+Terminal=false
+StartupNotify=false
