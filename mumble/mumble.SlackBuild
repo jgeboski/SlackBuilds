@@ -86,7 +86,11 @@ find . \
 # As of celt-0.11.0, the macro CELT_SET_VBR_RATE has been renamed to
 # CELT_SET_BITRATE. Please make sure you have at least celt 0.11.0,
 # if not comment the line below out.
-sed -i 's/CELT_SET_VBR_RATE/CELT_SET_BITRATE/' src/mumble/AudioInput.cpp
+patch -p1 < $CWD/AudioInput-fix-for-celt-0.11.0.patch
+
+# On GTK+ based envrionments (Ex: XFCE) the MainWindow's icon needed
+# to be directly set.
+patch -p1 < $CWD/MainWindow-set-the-window-icon.patch
 
 qmake \
   -recursive \
@@ -121,7 +125,7 @@ install -m 644 \
  $PKG/usr/man/man1
 
 install -m 644 scripts/mumble.desktop $PKG/usr/share/applications
-install -m 644 icons/mumble.xpm $PKG/usr/share/pixmaps
+install -m 644 icons/mumble.svg       $PKG/usr/share/pixmaps
 
 find release/plugins -type f -name *.so \
   -exec install -m 755 {} $PKG/usr/lib${LIBDIRSUFFIX}/mumble \;
