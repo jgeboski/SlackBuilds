@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+            |-----handy-ruler------------------------------------------------------|
+fakexinerama: Fake Xinerama (fake libXinerama replacement)
+fakexinerama:
+fakexinerama: Fake Xinerama is a replacement libXinerama library that instead
+fakexinerama: of querying the XServer reads ~/.fakexinerama and provides fake
+fakexinerama: information about Xinerama screens based on this file. It can be
+fakexinerama: used to fake a Xinerama setup even on computers with just one
+fakexinerama: monitor or to fake Xinerama setup other than one specified in
+fakexinerama: the XServer configuration.
+fakexinerama:
+fakexinerama: Homepage: http://home.kde.org/~seli/fakexinerama/
+fakexinerama:
