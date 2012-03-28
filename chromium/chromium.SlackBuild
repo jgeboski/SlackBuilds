@@ -34,7 +34,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=chromium
-VERSION=${VERSION:-16.0.891.0}
+VERSION=${VERSION:-19.0.1081.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -82,73 +82,80 @@ find . \
  -exec chmod 644 {} \;
 
 build/gyp_chromium --depth=. \
- -Dgcc_version=45 \
- -Duse_gconf=0 \
- -Duse_gnome_keyring=0 \
- -Dlinux_link_gnome_keyring=0 \
- -Dremove_webcore_debug_symbols=1 \
- -Dremoting=0 \
- -Dchromeos=0 \
- -Dwerror=0 \
- -Dno_strict_aliasing=1 \
- -Dwerror= \
- -Dlinux_sandbox_path=/usr/lib${LIBDIRSUFFIX}/chromium/chrome_sandbox \
- -Dlinux_strip_binary=1 \
- -Dproprietary_codecs=1 \
- -Duse_system_libjpeg=1 \
- -Duse_system_libxslt=1 \
- -Duse_system_libxml=1 \
- -Duse_system_bzip2=1 \
- -Duse_system_zlib=1 \
- -Duse_system_libpng=0 \
- -Duse_system_yasm=1 \
- -Duse_system_libevent=1 \
- -Ddisable_sse2=${NO_SSE2:-0} \
- -Dffmpeg_branding=Chrome \
- -Duse_system_ffmpeg=0 \
- -Duse_system_ssl=0 \
- -Ddisable_nacl=1 \
- -Denable_webrtc=0 \
- -Duse_kerberos=0
+  -Dgcc_version=45 \
+  -Dremoting=0 \
+  -Dchromeos=0 \
+  -Dwerror=0 \
+  -Dremove_webcore_debug_symbols=1 \
+  -Dno_strict_aliasing=1 \
+  -Dwerror= \
+  -Dlinux_sandbox_path=/usr/lib${LIBDIRSUFFIX}/chromium/chrome_sandbox \
+  -Dlinux_strip_binary=1 \
+  -Dproprietary_codecs=1 \
+  -Ddisable_nacl=1 \
+  -Ddisable_sse2=${NO_SSE2:-0} \
+  -Denable_webrtc=0 \
+  -Duse_gconf=0 \
+  -Duse_gnome_keyring=0 \
+  -Duse_kerberos=0 \
+  -Duse_openssl=0 \
+  -Duse_system_bzip2=1 \
+  -Duse_system_libbz2=1 \
+  -Duse_system_ffmpeg=0 \
+  -Duse_system_libevent=1 \
+  -Duse_system_libjpeg=1 \
+  -Duse_system_libpng=1 \
+  -Duse_system_libxml=1 \
+  -Duse_system_libxslt=1 \
+  -Duse_system_yasm=1 \
+  -Duse_system_zlib=1 \
+  -Dffmpeg_branding=Chrome \
+  -Dlinux_use_gold_flags=0 \
+  -Dlinux_use_gold_binary=0
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS -fno-ipa-cp" \
-make chrome chrome_sandbox BUILDTYPE=Release || exit 1
+make -j8 chrome chrome_sandbox BUILDTYPE=Release
 
 cd out/Release/
   mkdir -p \
     $PKG/usr/bin \
     $PKG/usr/lib${LIBDIRSUFFIX}/chromium \
     $PKG/usr/man/man1 \
-    $PKG/usr/share/applications \
-    $PKG/usr/share/pixmaps \
+    $PKG/usr/share/{applications,pixmaps}
   
-  install -m 0755 -D chrome $PKG/usr/lib${LIBDIRSUFFIX}/chromium
-  install -m 4555 -o root -g root -D chrome_sandbox $PKG/usr/lib${LIBDIRSUFFIX}/chromium
-  install -m 0755 -D libffmpegsumo.so $PKG/usr/lib${LIBDIRSUFFIX}/chromium
-  install -m 0644 -D \
+  install -m 755 \
+    chrome \
+    chrome_sandbox \
+    libffmpegsumo.so \
+   $PKG/usr/lib${LIBDIRSUFFIX}/chromium
+  
+   install -m 4755 \
+    chrome_sandbox \
+   $PKG/usr/lib${LIBDIRSUFFIX}/chromium
+  
+  install -m 644 \
     chrome.pak \
     resources.pak \
    $PKG/usr/lib${LIBDIRSUFFIX}/chromium
   
-  install -m 0644 -D chrome.1 $PKG/usr/man/man1/
-  cp -a locales/ $PKG/usr/lib${LIBDIRSUFFIX}/chromium
-  cp -a resources/ $PKG/usr/lib${LIBDIRSUFFIX}/chromium
-  cp product_logo_48.png $PKG/usr/share/pixmaps/chromium.png
-  cp $CWD/chromium.desktop $PKG/usr/share/applications
+  install -m 644 \
+    chrome.1 \
+   $PKG/usr/man/man1
   
-  find $PKG -name '*.d' -type f -delete
+  cp -a \
+    locales/ \
+    resources/ \
+   $PKG/usr/lib${LIBDIRSUFFIX}/chromium
+  
+  install -m 644 $CWD/chromium.desktop $PKG/usr/share/applications
+  install -m 644 product_logo_48.png   $PKG/usr/share/pixmaps/chromium.png
 cd -
 
-ln -s /usr/lib${LIBDIRSUFFIX}/chromium/chrome $PKG/usr/bin/chrome
-ln -s /usr/lib${LIBDIRSUFFIX}/chromium/chrome_sandbox $PKG/usr/bin/chrome_sandbox
+find $PKG -name '*.d' -type f -delete
 
-# As much as proprietary is bad, the in browser PDF viewer is nice
-# If you want to use the pdf lib, make sure you have a matching
-# source version for the libpdf.so build
-if [ -e $CWD/libpdf.so ]; then
-  install -m 0755 -D $CWD/libpdf.so $PKG/usr/lib${LIBDIRSUFFIX}/chromium
-fi
+ln -s /usr/lib${LIBDIRSUFFIX}/chromium/chrome         $PKG/usr/bin/chrome
+ln -s /usr/lib${LIBDIRSUFFIX}/chromium/chrome_sandbox $PKG/usr/bin/chrome_sandbox
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
