@@ -1,0 +1,17 @@
+LibreOffice is the power-packed free, libre and open source personal
+productivity suite for Windows, Macintosh and GNU/Linux, that gives
+you six feature-rich applications for all your document production
+and data processing needs: Writer, Calc, Impress, Draw, Math and Base.
+
+This package requires: perl-Archive-Zip
+
+If languages other English are required:
+
+    # LANGS="es sw tu cs sk" ./libreoffice.SlackBuild
+
+Or if all languages are needed:
+
+    # LANGS=ALL ./libreoffice.SlackBuild
+
+
+For source archives, please see: ./src/DOWNLOADS
