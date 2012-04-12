@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=monitorix
-VERSION=${VERSION:-2.4.1}
+VERSION=${VERSION:-2.5.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 ARCH="noarch"
@@ -63,17 +63,18 @@ cd $PRGNAM-$VERSION
 mkdir -p \
   $PKG/etc/rc.d \
   $PKG/usr/bin \
-  $PKG/usr/man/man5 \
-  $PKG/usr/man/man8 \
+  $PKG/usr/man/{man5,man8} \
   $PKG/var/lib/monitorix \
   $PKG/$DOCROOT/monitorix-cgi
 
-install -m 644 monitorix.conf $PKG/etc/monitorix.conf.new
-install -m 644 monitorix.init $PKG/etc/rc.d/rc.monitorix
 install -m 644 man/man5/monitorix.conf.5 $PKG/usr/man/man5
-install -m 644 man/man8/monitorix.8 $PKG/usr/man/man8
-install -m 644 monitorix.cgi $PKG/$DOCROOT/monitorix-cgi
-install -m 755 monitorix $PKG/usr/bin
+install -m 644 man/man8/monitorix.8      $PKG/usr/man/man8
+
+install -m 644 monitorix.cgi  $PKG/$DOCROOT/monitorix-cgi
+install -m 644 monitorix.conf $PKG/etc/monitorix.conf.new
+install -m 755 monitorix      $PKG/usr/bin
+
+install -m 644 $CWD/rc.monitorix $PKG/etc/rc.d/rc.monitorix.new
 
 install -m 644 \
   logo_bot.png logo_top.png monitorixico.png \
