@@ -42,14 +42,17 @@ mkdir -p $TMP $PKG $OUTPUT
 
 mkdir -p \
   $PKG/usr/bin \
-  $PKG/usr/share/{applications,minecraft,pixmaps}
+  $PKG/usr/share/{$PRGNAM,applications,pixmaps}
 
-install -m 755 $CWD/minecraft $PKG/usr/bin
-install -m 644 $CWD/minecraft.desktop $PKG/usr/share/applications
-install -m 644 $CWD/minecraft.jar $PKG/usr/share/minecraft
-install -m 644 $CWD/minecraft.png $PKG/usr/share/pixmaps
+echo -e \
+  "#!/bin/sh\njava -Xincgc -Xmx$MEMORY -jar /usr/share/$PRGNAM/$PRGNAM.jar $@" \
+  > $PKG/usr/bin/$PRGNAM
 
-sed -i "s/@MEMORY@/$MEMORY/" $PKG/usr/bin/minecraft
+chmod +x $PKG/usr/bin/$PRGNAM
+
+install -m 644 $CWD/$PRGNAM.desktop $PKG/usr/share/applications
+install -m 644 $CWD/$PRGNAM.jar     $PKG/usr/share/$PRGNAM
+install -m 644 $CWD/$PRGNAM.png     $PKG/usr/share/pixmaps
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
