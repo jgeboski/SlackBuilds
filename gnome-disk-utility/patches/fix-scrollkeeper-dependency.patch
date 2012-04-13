@@ -1,0 +1,32 @@
+From f895cc2f895c36c38a96199c1e6fd5300e8ef6ba Mon Sep 17 00:00:00 2001
+From: jgeboski <jgeboski@gmail.com>
+Date: Fri, 13 Apr 2012 16:25:41 -0400
+Subject: [PATCH] fix scrollkeeper dependency
+
+---
+ configure.ac |    9 ---------
+ 1 files changed, 0 insertions(+), 9 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 6789f3f..5012d99 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -183,15 +183,6 @@ AC_SUBST(GNOME_KEYRING_LIBS)
+ AC_SUBST(GNOME_KEYRING_CFLAGS)
+ AM_CONDITIONAL(ENABLE_GNOME_KEYRING, [test "$have_gnome_keyring" = "yes"])
+ 
+-# *************
+-# Documentation
+-# *************
+-
+-AC_PATH_PROG(SCROLLKEEPER_CONFIG, scrollkeeper-config,no)
+-if test x$SCROLLKEEPER_CONFIG = xno; then
+-  AC_MSG_ERROR(Couldn't find scrollkeeper-config, please install the scrollkeeper package)
+-fi
+-
+ # ********************
+ # Internationalization
+ # ********************
+-- 
+1.7.4.4
+
