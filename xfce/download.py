@@ -14,12 +14,18 @@ from glob              import glob
 from math              import floor
 
 PACKAGES = [
-    "exo",             "garcon",          "gtk-xfce-engine", "libxfce4ui",
-    "libxfce4util",    "libxfcegui4",     "mousepad",        "thunar-volman",
-    "Terminal",        "Thunar",          "tumbler",         "xfce-utils",
-    "xfce4-appfinder", "xfce4-dev-tools", "xfce4-mixer",     "xfce4-notifyd",
-    "xfce4-panel",     "xfce4-session",   "xfce4-settings",  "xfce4-volumed",
-    "xfconf",          "xfdesktop",       "xfwm4",           "xfwm4-themes"
+    "exo",             "garcon",      "gtk-xfce-engine", "libxfce4ui",
+    "libxfce4util",    "libxfcegui4", "mousepad",        "Terminal",
+    "Thunar",          "tumbler",     "xfce-utils",      "xfce4-appfinder",
+    "xfce4-dev-tools", "xfce4-mixer", "xfce4-panel",     "xfce4-session",
+    "xfce4-settings",  "xfconf",      "xfdesktop",       "xfwm4",
+    "xfwm4-themes"
+]
+
+EXTRAS = [
+    "orage",             "thunar-archive-plugin", "thunar-volman",
+    "xfce4-notifyd",     "xfce4-power-manager",   "xfce4-screenshooter",
+    "xfce4-taskmanager", "xfce4-volumed"
 ]
 
 FORCE  = False
@@ -123,19 +129,19 @@ def _info_get(package):
     
     return (archs[-1], url)
 
-def download(package):
+def download(package, source):
     archive, url = _info_get(package)
     
     if not archive or not url:
         return
     
-    f = os.path.join(SOURCE, archive)
+    f = os.path.join(source, archive)
     
     if not FORCE and os.path.exists(f):
         log.info("Package exists, skipping: %s", archive)
         return
     
-    p = os.path.join(SOURCE, "%s-*.tar.bz2" % (package))
+    p = os.path.join(source, "%s-*.tar.bz2" % (package))
     
     for p in glob(p):
         try:
@@ -155,11 +161,11 @@ def download(package):
         log.info("Failed to download: %s: nothing to download", package)
         return
     
-    if not os.path.exists(SOURCE):
+    if not os.path.exists(source):
         try:
-            os.makedirs(SOURCE)
+            os.makedirs(source)
         except OSError, msg:
-            log.error("Failed to make directory: %s: %s", SOURCE, msg)
+            log.error("Failed to make directory: %s: %s", source, msg)
             return
     
     try:
@@ -240,6 +246,14 @@ def main():
     )
     
     parser.add_option(
+        "-e", "--extras",
+        action  = "store",
+        dest    = "extras",
+        metavar = "LIST",
+        help    = "list of extra packages to download"
+    )
+    
+    parser.add_option(
         "-s", "--source-dir",
         action  = "store",
         dest    = "source",
@@ -249,14 +263,23 @@ def main():
     
     opts, args = parser.parse_args()
     packages   = PACKAGES
+    extras     = EXTRAS
     
     if opts.list:
-        if len(packages) < 1:
-            print "No packages found"
+        print "Packages(s):"
         
-        print "Supported Packages(s):"
+        if len(packages) < 1:
+            print "  No packages found"
         
         for p in packages:
+            print "  %s" % (p)
+        
+        print "Extra Packages(s):"
+        
+        if len(packages) < 1:
+            print "  No packages found"
+        
+        for p in extras:
             print "  %s" % (p)
         
         exit(0)
@@ -272,9 +295,15 @@ def main():
     
     if opts.packages:
         packages = opts.packages.split(",")
+        
+    if opts.extras:
+        extras = opts.extras.split(",")
     
     for p in packages:
-        download(p)
+        download(p, SOURCE)
+    
+    for p in extras:
+        download(p, os.path.join(SOURCE, "extra"))
     
 
 if __name__ == "__main__":
