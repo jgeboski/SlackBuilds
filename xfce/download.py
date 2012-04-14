@@ -62,17 +62,26 @@ def _url_join(base, url):
     
     return urlparse.urljoin(base, url)
 
+CATEGORY_CACHE = {
+    'xfce'          : None,
+    'apps'          : None,
+    'panel-plugins' : None,
+    'thunar-plugins': None,
+    'art'           : None
+}
+
 def _info_get(package):
-    categories = ["xfce", "apps", "panel-plugins", "thunar-plugins", "art"]
-    
     success  = False
     category = None
     
-    for category in categories:
-        url  = _url_join(MIRROR, category)
-        data = _url_get(url)
+    for category in CATEGORY_CACHE.keys():
+        url = _url_join(MIRROR, category)
         
-        match = re.search(".*%s/%s" % (category, package), data, re.I)
+        if not CATEGORY_CACHE[category]:
+            CATEGORY_CACHE[category] = _url_get(url)
+        
+        match = re.search("('|\").*%s/%s('|\")" % (category, package),
+            CATEGORY_CACHE[category], re.I)
         
         if match:
             success = True
@@ -85,7 +94,7 @@ def _info_get(package):
         ))
         return (None, None)
     
-    url  = _url_join(url,    package.lower())
+    url  = _url_join(url, package.lower())
     data = _url_get(url)
     vers = re.findall(".*%s/%s/([0-9\.]+)" % (category, package), data, re.I)
     vers.sort()
