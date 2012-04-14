@@ -9,8 +9,9 @@ import sys
 import urllib2
 import urlparse
 
-from glob import glob
-from math import floor
+from distutils.version import LooseVersion
+from glob              import glob
+from math              import floor
 
 PACKAGES = [
     "exo",             "garcon",          "gtk-xfce-engine", "libxfce4ui",
@@ -97,7 +98,7 @@ def _info_get(package):
     url  = _url_join(url, package.lower())
     data = _url_get(url)
     vers = re.findall(".*%s/%s/([0-9\.]+)" % (category, package), data, re.I)
-    vers.sort()
+    vers.sort(key = LooseVersion)
     
     if len(vers) < 1:
         log.error(
@@ -109,7 +110,7 @@ def _info_get(package):
     url   = _url_join(url, vers[-1])
     data  = _url_get(url)
     archs = re.findall(".*(%s-[0-9\.]+.tar.bz2)" % (package), data, re.I)
-    archs.sort()
+    archs.sort(key = LooseVersion)
     
     if len(archs) < 1:
         log.error(
