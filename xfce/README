@@ -1,0 +1,65 @@
+Xfce is a fast and lightweight desktop environment that is both
+visually appealing and easy to use.
+
+As of >= XFCE 4.8 many GNOME dependencies are required.  Follow the
+build order below for assistance.
+
+A python script has been included to auto-download the lastest
+XFCE tarballs. To use download.py:
+
+  $ ./download.py
+
+
+Package to remove before running xfce.SlackBuild:
+
+  - thunar-archive-plugin
+  - thunar-volman
+  - xfce
+  - xfce4-notifyd
+  - xfce4-power-manager
+  - xfce4-screenshooter
+  - xfce4-taskmanager
+  - xfce4-volumed
+
+
+Dependency build order:
+
+  1. GConf (optional):
+       http://slackbuilds.org/repository/13.37/libraries/GConf/
+  
+       1. ORBit2:
+            http://slackbuilds.org/repository/13.37/libraries/ORBit2/
+  
+  2. libsoup:
+       http://slackbuilds.org/repository/13.37/libraries/libsoup/
+       
+       1. libproxy (optional):
+            http://slackbuilds.org/repository/13.37/libraries/libproxy/
+  
+  3. udisks:
+       http://slackbuilds.org/repository/13.37/system/udisks/
+       
+       1. sg3_utils:
+            http://slackbuilds.org/repository/13.37/libraries/sg3_utils/
+       
+       2. libatasmart:
+            http://slackbuilds.org/repository/13.37/libraries/libatasmart/
+  
+  4. upower (optional, needed for xfce4-power-manager):
+       http://slackbuilds.org/repository/13.37/system/upower/
+  
+  5. glade3 (optional):
+       http://slackbuilds.org/repository/13.37/development/glade3/
+  
+  6. gvfs:
+       http://slackbuilds.org/repository/13.37/system/gvfs/ 
+  
+       1. gnome-disk-utility (optional):
+            https://github.com/jgeboski/SlackBuilds/tree/master/gnome-disk-utility/
+            ../gnome-disk-utility/
+            
+            1. gnome-common:
+                 http://slackbuilds.org/repository/13.37/development/gnome-common/
+            
+            2. libunique:
+                 http://slackbuilds.org/repository/13.37/libraries/libunique/
