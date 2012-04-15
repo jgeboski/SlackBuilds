@@ -25,7 +25,7 @@ PACKAGES = [
 EXTRAS = [
     "orage",             "thunar-archive-plugin", "thunar-volman",
     "xfce4-notifyd",     "xfce4-power-manager",   "xfce4-screenshooter",
-    "xfce4-taskmanager", "xfce4-volumed"
+    "xfce4-taskmanager"
 ]
 
 FORCE  = False
