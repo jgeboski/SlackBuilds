@@ -38,6 +38,8 @@ VERSION=${VERSION:-19.0.1081.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
+NUMJOBS=${NUMJOBS:--j8}
+
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
     i?86) ARCH=i486 ;;
@@ -115,7 +117,7 @@ build/gyp_chromium --depth=. \
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS -fno-ipa-cp" \
-make -j8 chrome chrome_sandbox BUILDTYPE=Release
+make $NUMJOBS chrome chrome_sandbox BUILDTYPE=Release
 
 cd out/Release/
   mkdir -p \
