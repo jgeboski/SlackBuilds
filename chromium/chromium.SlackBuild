@@ -34,7 +34,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=chromium
-VERSION=${VERSION:-19.0.1081.0}
+VERSION=${VERSION:-20.0.1121.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -139,6 +139,8 @@ cd out/Release/
   install -m 644 \
     chrome.pak \
     resources.pak \
+    theme_resources_standard.pak \
+    ui_resources_standard.pak \
    $PKG/usr/lib${LIBDIRSUFFIX}/chromium
   
   install -m 644 \
