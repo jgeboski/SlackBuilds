@@ -151,9 +151,10 @@ for app in base calc draw impress math startcenter writer ; do
 done
 
 mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/mozilla/plugins
-install -m 755 \
-  $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/program/libnpsoplugin.so \
- $PKG/usr/lib${LIBDIRSUFFIX}/mozilla/plugins
+
+cd $PKG/usr/lib${LIBDIRSUFFIX}/mozilla/plugins
+  ln -sf /usr/lib${LIBDIRSUFFIX}/$PRGNAM/program/libnpsoplugin.so
+cd -
 
 rm -rf \
   $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/share/xdg \
