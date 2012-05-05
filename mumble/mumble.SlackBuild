@@ -156,6 +156,7 @@ find release/plugins -type f -name *.so \
 # If the overlay was built, let's install the library for it
 if [ -e release/libmumble.so.$VERSION ]; then
   install -m 755 release/libmumble.so.$VERSION $PKG/usr/lib${LIBDIRSUFFIX}
+  install -m 755 scripts/mumble-overlay        $PKG/usr/bin
   
   cd $PKG/usr/lib${LIBDIRSUFFIX}
     ln -sf libmumble.so.$VERSION libmumble.so.1.2
