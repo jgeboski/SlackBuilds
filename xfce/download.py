@@ -14,12 +14,11 @@ from glob              import glob
 from math              import floor
 
 PACKAGES = [
-    "exo",             "garcon",      "gtk-xfce-engine", "libxfce4ui",
-    "libxfce4util",    "libxfcegui4", "mousepad",        "Terminal",
-    "Thunar",          "tumbler",     "xfce-utils",      "xfce4-appfinder",
-    "xfce4-dev-tools", "xfce4-mixer", "xfce4-panel",     "xfce4-session",
-    "xfce4-settings",  "xfconf",      "xfdesktop",       "xfwm4",
-    "xfwm4-themes"
+    "exo",          "garcon",      "gtk-xfce-engine", "libxfce4ui",
+    "libxfce4util", "libxfcegui4", "mousepad",        "Terminal",
+    "Thunar",       "tumbler",     "xfce4-appfinder", "xfce4-dev-tools",
+    "xfce4-mixer",  "xfce4-panel", "xfce4-session",   "xfce4-settings",
+    "xfconf",       "xfdesktop",   "xfwm4",           "xfwm4-themes",    
 ]
 
 EXTRAS = [
@@ -74,6 +73,7 @@ CATEGORY_CACHE = {
     'apps'          : None,
     'panel-plugins' : None,
     'thunar-plugins': None,
+    'archive'       : None,
     'art'           : None
 }
 
