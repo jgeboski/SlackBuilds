@@ -24,8 +24,12 @@
 
 PRGNAM=mumble
 VERSION=${VERSION:-1.2.3}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 TAG=${TAG:-_SBo}
+
+G15=${G15:-no}
+OVERLAY=${OVERLAY:-no}
+COMPAT32=${COMPAT32:-no}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -53,9 +57,6 @@ else
   SLKCFLAGS="-O2"
   LIBDIRSUFFIX=""
 fi
-
-G15=${G15:-no}
-OVERLAY=${OVERLAY:-no}
 
 BUILD_G15=""
 BUILD_OVERLAY=""
@@ -163,6 +164,32 @@ if [ -e release/libmumble.so.$VERSION ]; then
   install -m 755 scripts/mumble-overlay        $PKG/usr/bin
   
   cd $PKG/usr/lib${LIBDIRSUFFIX}
+    ln -sf libmumble.so.$VERSION libmumble.so.1.2
+    ln -sf libmumble.so.$VERSION libmumble.so.1
+    ln -sf libmumble.so.$VERSION libmumble.so
+  cd -
+fi
+
+# The mumble-overly script will look for a 32-bit libmumble on non-pure x86_64
+# systems. If the x86_64 based system has a multilib setup, the COMPAT32
+# variable can be set to 'yes' to build a 32-bit version of libmumble.
+if [ "$COMPAT32" = "yes" -a "$OVERLAY" = "yes" -a "$ARCH" = "x86_64" ]; then
+  cd overlay_gl
+    make clean
+    
+    qmake \
+      QMAKE_CFLAGS="-m32 -O2 -march=i486 -mtune=i686" \
+      QMAKE_CXXFLAGS="-m32 -O2 -march=i486 -mtune=i686" \
+      QMAKE_LFLAGS="-m32" \
+      overlay_gl.pro
+    
+    make release DESTDIR_ADD=-32
+  cd -
+  
+  mkdir -p $PKG/usr/lib
+  install -m 755 release-32/libmumble.so.$VERSION $PKG/usr/lib
+  
+  cd $PKG/usr/lib
     ln -sf libmumble.so.$VERSION libmumble.so.1.2
     ln -sf libmumble.so.$VERSION libmumble.so.1
     ln -sf libmumble.so.$VERSION libmumble.so
