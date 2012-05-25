@@ -12,6 +12,3 @@ If languages other English are required:
 Or if all languages are needed:
 
     # LANGS=ALL ./libreoffice.SlackBuild
-
-
-For source archives, please see: ./src/DOWNLOADS

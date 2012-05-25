@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=libreoffice
-VERSION=${VERSION:-3.5.3.2}
+VERSION=${VERSION:-3.5.4.2}
 BUILD=${BUILD:-1}
 
 if [ -z "$ARCH" ]; then
@@ -59,27 +59,30 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 
-rm -rf \
-  $PRGNAM-core-$VERSION \
-  $PRGNAM-dictionaries-$VERSION \
-  $PRGNAM-help-$VERSION \
+PKGNAM=(
+  $PRGNAM-core-$VERSION
+  $PRGNAM-dictionaries-$VERSION
+  $PRGNAM-help-$VERSION
   $PRGNAM-translations-$VERSION
+)
 
-tar xvf $CWD/src/$PRGNAM-core-$VERSION.tar.xz
-tar xvf $CWD/src/$PRGNAM-dictionaries-$VERSION.tar.xz
-tar xvf $CWD/src/$PRGNAM-help-$VERSION.tar.xz
+rm -rf ${PKGNAM[@]}
 
-if [ -e $CWD/src/$PRGNAM-translations-$VERSION.tar.xz ]; then
-  tar xvf $CWD/src/$PRGNAM-translations-$VERSION.tar.xz
-  mv $PRGNAM-translations-$VERSION/translations $PRGNAM-core-$VERSION
+tar xvf $CWD/${PKGNAM[0]}.tar.xz
+tar xvf $CWD/${PKGNAM[1]}.tar.xz
+tar xvf $CWD/${PKGNAM[2]}.tar.xz
+
+if [ -e $CWD/${PKGNAM[3]}.tar.xz ]; then
+  tar xvf $CWD/${PKGNAM[3]}.tar.xz
+  mv ${PKGNAM[3]}/translations ${PKGNAM[0]}
 fi
 
 mv \
-  $PRGNAM-dictionaries-$VERSION/dictionaries \
-  $PRGNAM-help-$VERSION/helpcontent2 \
- $PRGNAM-core-$VERSION
+  ${PKGNAM[1]}/dictionaries \
+  ${PKGNAM[2]}/helpcontent2 \
+ ${PKGNAM[0]}
 
-cd $PRGNAM-core-$VERSION
+cd ${PKGNAM[0]}
 
 chown -R root:root .
 find . \
@@ -171,7 +174,7 @@ cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/doinst.sh > $PKG/install/doinst.sh
+cat $CWD/doinst.sh  > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD.${PKGTYPE:-tgz}

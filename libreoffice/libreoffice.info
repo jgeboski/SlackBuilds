@@ -1,0 +1,18 @@
+PRGNAM="libreoffice"
+VERSION="3.5.4.2"
+HOMEPAGE="http://www.libreoffice.org/"
+DOWNLOAD=" \
+  http://download.documentfoundation.org/libreoffice/src/3.5.4/libreoffice-core-3.5.4.2.tar.xz \
+  http://download.documentfoundation.org/libreoffice/src/3.5.4/libreoffice-dictionaries-3.5.4.2.tar.xz \
+  http://download.documentfoundation.org/libreoffice/src/3.5.4/libreoffice-help-3.5.4.2.tar.xz \
+  http://download.documentfoundation.org/libreoffice/src/3.5.4/libreoffice-translations-3.5.4.2.tar.xz"
+MD5SUM=" \
+  61afc900785dd7d071b96d9ab0af46f3 \
+  f5b21e92bebabffe634aabb4e36cdd87 \
+  d2e7414a60eacafef45fbc4bc1a8ccb3 \
+  545d1608da2cc736be5c8bf941adbbfb"
+DOWNLOAD_x86_64=""
+MD5SUM_x86_64=""
+MAINTAINER="James Geboski"
+EMAIL="jgeboski@gmail.com"
+APPROVED=""
