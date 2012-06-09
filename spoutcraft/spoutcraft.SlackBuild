@@ -42,7 +42,7 @@ mkdir -p \
   $PKG/usr/bin \
   $PKG/usr/share/{$PRGNAM,applications,pixmaps}
 
-echo -e "#!/bin/sh\njava -Xincgc -jar /usr/share/$PRGNAM/$PRGNAM.jar $@" \
+echo -e "#!/bin/sh\njava -jar /usr/share/$PRGNAM/$PRGNAM.jar $@" \
   > $PKG/usr/bin/$PRGNAM
 
 chmod +x $PKG/usr/bin/$PRGNAM
