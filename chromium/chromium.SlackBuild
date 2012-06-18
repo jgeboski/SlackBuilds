@@ -34,7 +34,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=chromium
-VERSION=${VERSION:-21.0.1159.2}
+VERSION=${VERSION:-21.0.1178.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -114,6 +114,15 @@ build/gyp_chromium --depth=. \
   -Dffmpeg_branding=Chrome \
   -Dlinux_use_gold_flags=0 \
   -Dlinux_use_gold_binary=0
+
+# Hack around for seamonkey's expat.h being included first
+
+sed -i "s,expat.h,/usr/include/expat.h,g" \
+  third_party/libjingle/source/talk/xmllite/xmlparser.h \
+  third_party/libjingle/source/talk/xmllite/xmlbuilder.h \
+  third_party/libjingle/source/talk/xmpp/xmppstanzaparser.cc \
+  third_party/skia/src/ports/SkXMLParser_expat.cpp \
+  third_party/mesa/MesaLib/src/mesa/drivers/dri/common/xmlconfig.c
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS -fno-ipa-cp" \
