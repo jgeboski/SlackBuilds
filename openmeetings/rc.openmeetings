@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export JAVA_OPTS=""
+JAVA_OPTS=""
 
 PID=$(pgrep -f 'java.*org.red5.server.Bootstrap')
 
@@ -13,7 +13,9 @@ openmeetings_start()
   
   echo "Starting OpenMeetings..."
   
-  su - openmeetings -c "cd /opt/openmeetings; sh red5.sh &>/dev/null & disown"
+  su - openmeetings -c " \
+    cd /opt/openmeetings \
+    JAVA_OPTS=\"$JAVA_OPTS\" sh red5.sh &>/dev/null & disown"
 }
 
 openmeetings_stop()
