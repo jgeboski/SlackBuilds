@@ -60,6 +60,7 @@ mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 
 PKGNAM=(
+  $PRGNAM-binfilter-$VERSION
   $PRGNAM-core-$VERSION
   $PRGNAM-dictionaries-$VERSION
   $PRGNAM-help-$VERSION
@@ -68,21 +69,29 @@ PKGNAM=(
 
 rm -rf ${PKGNAM[@]}
 
-tar xvf $CWD/${PKGNAM[0]}.tar.xz
 tar xvf $CWD/${PKGNAM[1]}.tar.xz
 tar xvf $CWD/${PKGNAM[2]}.tar.xz
-
-if [ -e $CWD/${PKGNAM[3]}.tar.xz ]; then
-  tar xvf $CWD/${PKGNAM[3]}.tar.xz
-  mv ${PKGNAM[3]}/translations ${PKGNAM[0]}
-fi
+tar xvf $CWD/${PKGNAM[3]}.tar.xz
 
 mv \
-  ${PKGNAM[1]}/dictionaries \
-  ${PKGNAM[2]}/helpcontent2 \
- ${PKGNAM[0]}
+  ${PKGNAM[2]}/dictionaries \
+  ${PKGNAM[3]}/helpcontent2 \
+ ${PKGNAM[1]}
 
-cd ${PKGNAM[0]}
+if [ -e $CWD/${PKGNAM[0]}.tar.xz ]; then
+  tar xvf $CWD/${PKGNAM[0]}.tar.xz
+  mv ${PKGNAM[0]}/binfilter ${PKGNAM[1]}
+  BINFILTER="enable"
+else
+  BINFILTER="disable"
+fi
+
+if [ -e $CWD/${PKGNAM[4]}.tar.xz ]; then
+  tar xvf $CWD/${PKGNAM[4]}.tar.xz
+  mv ${PKGNAM[4]}/translations ${PKGNAM[1]}
+fi
+
+cd ${PKGNAM[1]}
 
 chown -R root:root .
 find . \
@@ -108,6 +117,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-mozilla \
   --disable-rpath \
   --disable-zenity \
+  --$BINFILTER-binfilter \
   --enable-dbus \
   --enable-gio \
   --enable-mergelibs \
@@ -145,8 +155,9 @@ make fetch build
 make distro-pack-install -o build DESTDIR=$PKG
 
 for app in base calc draw impress math startcenter writer ; do
-  sed -i "s/$PRGNAM\(\s-\)/loffice\1/g" \
-    $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/share/xdg/$app.desktop
+  sed -i \
+    "s/$PRGNAM\(\s-\)/loffice\1/g" \
+   $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/share/xdg/$app.desktop
   
   install -m 644 \
     $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/share/xdg/$app.desktop \

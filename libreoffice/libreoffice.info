@@ -2,11 +2,13 @@ PRGNAM="libreoffice"
 VERSION="3.5.5.2"
 HOMEPAGE="http://www.libreoffice.org/"
 DOWNLOAD=" \
+  http://download.documentfoundation.org/libreoffice/src/3.5.5/libreoffice-binfilter-3.5.5.2.tar.xz \
   http://download.documentfoundation.org/libreoffice/src/3.5.5/libreoffice-core-3.5.5.2.tar.xz \
   http://download.documentfoundation.org/libreoffice/src/3.5.5/libreoffice-dictionaries-3.5.5.2.tar.xz \
   http://download.documentfoundation.org/libreoffice/src/3.5.5/libreoffice-help-3.5.5.2.tar.xz \
   http://download.documentfoundation.org/libreoffice/src/3.5.5/libreoffice-translations-3.5.5.2.tar.xz"
 MD5SUM=" \
+  45c40138e8edd91b91e9845e2efd8eb0 \
   6d60a0541237d8507b4c55247ff33fc1 \
   b6bb2acea8c86959e72402bb59b3fc13 \
   f9262186489750608a48356e92414600 \
