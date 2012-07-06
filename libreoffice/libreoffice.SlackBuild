@@ -139,6 +139,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-system-libpng \
   --with-system-libxml \
   --with-system-mesa-headers \
+  --with-system-mozilla=seamonkey \
+  --with-system-mozilla-headers \
   --with-system-neon \
   --with-system-openssl \
   --with-system-poppler \
