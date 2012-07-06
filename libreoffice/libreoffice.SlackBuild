@@ -125,6 +125,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --enable-release-build \
   --with-lang="$LANGS" \
   --with-external-dict-dir=/usr/share/hunspell \
+  --with-external-tar="$TMP/external-$VERSION" \
   --with-num-cpus=${NUMCPUS:-2} \
   --with-max-jobs=${NUMJOBS:-4} \
   --with-system-boost \
@@ -153,8 +154,12 @@ CXXFLAGS="$SLKCFLAGS" \
   --without-java \
   --without-myspell-dicts
 
-make fetch build
-make distro-pack-install -o build DESTDIR=$PKG
+if [ ! -e $TMP/external-$VERSION ]; then
+  make fetch
+fi
+
+make build
+make distro-pack-install DESTDIR=$PKG
 
 for app in base calc draw impress math startcenter writer ; do
   sed -i \
