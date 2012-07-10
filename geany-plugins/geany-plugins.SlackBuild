@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=geany-plugins
-VERSION=${VERSION:-0.21.1}
+VERSION=${VERSION:-1.22}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -78,7 +78,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --localstatedir=/var \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --build=$ARCH-slackware-linux
+  --build=$ARCH-slackware-linux \
+  --enable-geanygdb
 
 make
 make install DESTDIR=$PKG
@@ -88,8 +89,7 @@ find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  NEWS \
-  README \
+  NEWS README \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 

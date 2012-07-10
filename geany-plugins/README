@@ -1,8 +1,12 @@
-Geany Plugins is a package of the plugins from the Geany site thaat 
+Geany Plugins is a package of the plugins from the Geany site that 
 will enhance and extend Geany's capabilities. Most of these plugins
-were developed by various developers on SourceForge.net.
+were developed by various developers on Github.
 
 This requires Geany.
 
-Notice the 'geanygendoc' plugin will not be built as it requires
-the dependencies: GIO and CTPL.
+Optional dependencies:
+
+Plugin DevHelp:       devhelp, webkitgtk
+Plugin GeniusPaste:   libsoup
+Plugin Updatechecker: libsoup
+Plugin WebHelper:     webkitgtk
