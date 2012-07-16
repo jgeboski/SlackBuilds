@@ -1,0 +1,64 @@
+From 0803206b3d031306747e157c233f3621b713aa7b Mon Sep 17 00:00:00 2001
+From: jgeboski <jgeboski@gmail.com>
+Date: Mon, 16 Jul 2012 07:54:29 -0400
+Subject: [PATCH] Remove GNOME Keyring dependency
+
+---
+ configure.in                           |    5 -----
+ src/main/python/gnome15/g15accounts.py |    7 ++-----
+ 2 files changed, 2 insertions(+), 10 deletions(-)
+
+diff --git a/configure.in b/configure.in
+index 11b376a..26d5dc8 100644
+--- a/configure.in
++++ b/configure.in
+@@ -112,11 +112,6 @@ AC_ARG_ENABLE([udevmode],
+ AC_SUBST(DEVICEMODE, $devicemode)
+ 
+ dnl Required modules
+-AX_PYTHON_MODULE(keyring, [])
+-AS_IF([test "x${HAVE_PYMOD_KEYRING}" = "xno"],
+-     [AC_MSG_ERROR([Requires Python Keyring Library])])
+-
+-dnl Required modules
+ AX_PYTHON_MODULE(virtkey, [])
+ AS_IF([test "x${HAVE_PYMOD_VIRTKEY}" = "xno"],
+      [AC_MSG_ERROR([Requires Python Virtkey Library])])
+diff --git a/src/main/python/gnome15/g15accounts.py b/src/main/python/gnome15/g15accounts.py
+index 43ade02..18d1e9e 100644
+--- a/src/main/python/gnome15/g15accounts.py
++++ b/src/main/python/gnome15/g15accounts.py
+@@ -37,7 +37,6 @@ import pyinotify
+ import pwd
+ from threading import Lock
+ import gobject
+-import keyring
+ 
+ 
+ """
+@@ -120,14 +119,12 @@ class G15Keyring():
+     
+     def store_password(self, account, password, hostname = None, port = None):
+         _, name = self.get_uri_and_props(account, hostname, port)        
+-        keyring.set_password(name, self.get_username(account), password)
+         
+     def find_secret(self, account, name, release_lock = True): 
+         username = self.get_username(account) 
+         try :
+-            pw = keyring.get_password(name, username)
+             if pw is not None:
+-                self.password = pw
++                self.password = str()
+                 return
+                 
+             # Ask for the password
+@@ -518,4 +515,4 @@ class G15AccountPreferences():
+     def _get_selected_account(self):
+         (model, path) = self.account_list.get_selection().get_selected()
+         if path != None:
+-            return self.account_mgr.by_name(model[path][0])
+\ No newline at end of file
++            return self.account_mgr.by_name(model[path][0])
+-- 
+1.7.4.4
+
