@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=spoutcraft
-VERSION=${VERSION:-1.2.5}
+VERSION=${VERSION:-328}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -45,11 +45,11 @@ mkdir -p \
 echo -e "#!/bin/sh\njava -jar /usr/share/$PRGNAM/$PRGNAM.jar $@" \
   > $PKG/usr/bin/$PRGNAM
 
-chmod +x $PKG/usr/bin/$PRGNAM
+chmod a+x $PKG/usr/bin/$PRGNAM
 
 install -m 644 $CWD/$PRGNAM.desktop $PKG/usr/share/applications
 install -m 644 $CWD/$PRGNAM.png     $PKG/usr/share/pixmaps
-install -m 644 $CWD/Spoutcraft.jar  $PKG/usr/share/$PRGNAM/$PRGNAM.jar
+install -m 644 $CWD/launcher-2.0.0-SNAPSHOT.jar $PKG/usr/share/$PRGNAM/$PRGNAM.jar
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
