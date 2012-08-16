@@ -13,7 +13,7 @@ pyinputevent: using the `/dev/input/event*` devices, as well as providing a mean
 pyinputevent: to pass new events to the input subsystem using the `uinput` kernel
 pyinputevent: module and `/dev/uinput`.
 pyinputevent:
-pyinputevent:
-pyinputevent:
 pyinputevent: Homepage: http://blog.corporatism.org/blog/2010/02/
+pyinputevent:
+pyinputevent:
 pyinputevent:

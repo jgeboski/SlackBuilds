@@ -14,6 +14,6 @@ monitorix: possible. It has been created to be used under production UNIX/Linux
 monitorix: servers, but due to its simplicity and small size you may also use
 monitorix: it on embedded devices as well.
 monitorix:
-monitorix:
 monitorix: Homepage: http://www.monitorix.org/
+monitorix:
 monitorix:
