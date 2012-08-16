@@ -1,18 +1,18 @@
 PRGNAM="libreoffice"
-VERSION="3.5.5.3"
+VERSION="3.6.0.4"
 HOMEPAGE="http://www.libreoffice.org/"
 DOWNLOAD=" \
-  http://download.documentfoundation.org/libreoffice/src/3.5.5/libreoffice-binfilter-3.5.5.3.tar.xz \
-  http://download.documentfoundation.org/libreoffice/src/3.5.5/libreoffice-core-3.5.5.3.tar.xz \
-  http://download.documentfoundation.org/libreoffice/src/3.5.5/libreoffice-dictionaries-3.5.5.3.tar.xz \
-  http://download.documentfoundation.org/libreoffice/src/3.5.5/libreoffice-help-3.5.5.3.tar.xz \
-  http://download.documentfoundation.org/libreoffice/src/3.5.5/libreoffice-translations-3.5.5.3.tar.xz"
+  http://download.documentfoundation.org/libreoffice/src/3.6.0/libreoffice-binfilter-3.6.0.4.tar.xz \
+  http://download.documentfoundation.org/libreoffice/src/3.6.0/libreoffice-core-3.6.0.4.tar.xz \
+  http://download.documentfoundation.org/libreoffice/src/3.6.0/libreoffice-dictionaries-3.6.0.4.tar.xz \
+  http://download.documentfoundation.org/libreoffice/src/3.6.0/libreoffice-help-3.6.0.4.tar.xz \
+  http://download.documentfoundation.org/libreoffice/src/3.6.0/libreoffice-translations-3.6.0.4.tar.xz"
 MD5SUM=" \
-  db1e3be0172d2819e5256d6cb9289e07 \
-  ccb80344ae1ac546b3a6b6d85f3ae26a \
-  a7eca387ac26d4cbd92ffd9bd473111d \
-  09153713133bddc49af99bd76129e929 \
-  c2e66522b8adf0b3fb5789e295129ba9"
+  d63fed7dd5b368d1753eeebb5972c740 \
+  67cf97e86c75363238a371f64ef5f606 \
+  228e928d174321762b2020aa5b9104f1 \
+  8422b0c4c797abeefed3ee4490586dd2 \
+  6cc8fa86be8c657ba23434c6c8d99416"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
 MAINTAINER="James Geboski"

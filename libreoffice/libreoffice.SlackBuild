@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=libreoffice
-VERSION=${VERSION:-3.5.5.3}
+VERSION=${VERSION:-3.6.0.4}
 BUILD=${BUILD:-1}
 
 if [ -z "$ARCH" ]; then
@@ -151,7 +151,9 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-system-zlib \
   --with-x \
   --without-fonts \
+  --without-gssapi \
   --without-java \
+  --without-krb5 \
   --without-myspell-dicts
 
 if [ ! -e $TMP/external-$VERSION ]; then
