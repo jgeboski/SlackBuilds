@@ -5,4 +5,5 @@ integration with the Linux desktop possible, using the standard
 protocols and libraries where appropriate.
 
 This package requires: gnome-python, gnome-python-desktop, lxml, pyinotify,
-                       python-uinput, python-xlib, pyusb, pyxdg, virtkey
+                       pyinputevent, python-uinput, python-xlib, pyusb,
+                       pyxdg, virtkey
