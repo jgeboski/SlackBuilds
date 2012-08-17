@@ -4,6 +4,21 @@ including the G15 and G19. The intention is to provide the best
 integration with the Linux desktop possible, using the standard
 protocols and libraries where appropriate.
 
-Note, this packages only includes the plugins for gnome15.
-
 This package requires: gnome15
+
+Optional dependencies:
+Plugin cal-google: gdata
+Plugin processes: gnome-python-desktop (with libgtop support)
+Plugin rss: feedparser
+Plugin sysmon: gnome-python-desktop (with libgtop support)
+Plugin volume: pyalsaaudio
+
+Unsupported plugins:
+Plugin cal-evolution: evolution
+Plugin google-analytics: cairoplot
+Plugin im: telepathy
+Plugin indicator-me: appindicator
+Plugin indicator-messages: unity
+Plugin lens: unity
+Plugin mediaplayer: gst-python
+Plugin sense: pysensors
