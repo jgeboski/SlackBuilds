@@ -1,4 +1,0 @@
-GNOME disk utility provides libraries and applications for dealing
-with storage devices.
-
-This package requires: gnome-common, libunique
