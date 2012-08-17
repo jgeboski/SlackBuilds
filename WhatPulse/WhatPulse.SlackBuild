@@ -62,7 +62,7 @@ mkdir -p $TMP $PKG $OUTPUT
 
 mkdir -p $PKG/usr/bin
 tar xf $CWD/$PRGNAM-Linux$PKG_ARCH-$VERSION.tar.gz -C $PKG/usr/bin
-chown root:whatpulse $PKG/usr/bin/WhatPulse
+chown root:$WHATPULSE_GROUP $PKG/usr/bin/WhatPulse
 chmod 0750 $PKG/usr/bin/WhatPulse
 
 mkdir -p $PKG/lib/udev/rules.d
