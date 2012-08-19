@@ -109,8 +109,9 @@ CXXFLAGS="$SLKCFLAGS" \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --build=$ARCH-slackware-linux \
+  --disable-ccache \
   --disable-gconf \
-  --disable-gnome-vfs \
+  --disable-gtk3 \
   --disable-kdeab \
   --disable-ldap \
   --disable-lockdown \
@@ -132,19 +133,21 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-system-cairo \
   --with-system-curl \
   --with-system-dicts \
-  --with-system-expat \
   --with-system-db \
+  --with-system-expat \
   --with-system-gettext \
   --with-system-hunspell \
+  --with-system-icu \
   --with-system-jpeg \
+  --with-system-lcms2 \
   --with-system-libpng \
+  --with-system-libwpd \
   --with-system-libxml \
   --with-system-mesa-headers \
-  --with-system-mozilla=seamonkey \
-  --with-system-mozilla-headers \
   --with-system-neon \
+  --with-system-nss \
+  --with-system-odbc \
   --with-system-openssl \
-  --with-system-poppler \
   --with-system-redland \
   --with-unix-wrapper=libreoffice \
   --with-system-xextensions-headers \
@@ -155,6 +158,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --without-java \
   --without-krb5 \
   --without-myspell-dicts
+  # --with-system-clucene # Need clucene-data
+  # --with-system-poppler # N12_GLOBAL__N_18PDFITestE::testXPDFParser test fails
 
 if [ ! -e $TMP/external-$VERSION ]; then
   make fetch
@@ -167,7 +172,7 @@ for app in base calc draw impress math startcenter writer ; do
   sed -i \
     "s/$PRGNAM\(\s-\)/loffice\1/g" \
    $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/share/xdg/$app.desktop
-  
+
   install -m 644 \
     $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/share/xdg/$app.desktop \
    $PKG/usr/share/applications/$PRGNAM-$app.desktop
