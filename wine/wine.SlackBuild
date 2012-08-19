@@ -24,11 +24,9 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=wine
-VERSION=${VERSION:-1.5.10}
+VERSION=${VERSION:-1.5.11}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
-
-NUMJOBS=${NUMJOBS:--j8}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -87,8 +85,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --${do_opengl}-opengl \
   --build=$ARCH-slackware-linux
 
-make $NUMJOBS depend
-make $NUMJOBS
+make depend
+make
 make install DESTDIR=$PKG
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
