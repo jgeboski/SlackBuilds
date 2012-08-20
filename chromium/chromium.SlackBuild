@@ -34,7 +34,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=chromium
-VERSION=${VERSION:-22.0.1230.1}
+VERSION=${VERSION:-22.0.1229.10}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -81,6 +81,11 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+# When a chromium 
+sed -i \
+  "s/chrome::RESULT_CODE_NORMAL_EXIT_PROCESS_NOTIFIED/content::RESULT_CODE_NORMAL_EXIT/" \
+ chrome/browser/chrome_browser_main.cc
+
 build/gyp_chromium --depth=. \
   -Dgcc_version=47 \
   -Dremoting=0 \
@@ -115,7 +120,8 @@ build/gyp_chromium --depth=. \
   -Dffmpeg_branding=Chrome \
   -Dlinux_use_gold_flags=0 \
   -Dlinux_use_gold_binary=0
-  #-Duse_system_sqlite=1
+  #-Duse_system_sqlite=1 # Missing symbols
+  #-Duse_system_ssl=1    # Missing symbols
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS -fno-ipa-cp" \
@@ -127,32 +133,21 @@ cd out/Release/
     $PKG/usr/lib${LIBDIRSUFFIX}/chromium \
     $PKG/usr/man/man1 \
     $PKG/usr/share/{applications,pixmaps}
-  
+
   install -m 755 \
     chrome \
-    chrome_sandbox \
     libffmpegsumo.so \
    $PKG/usr/lib${LIBDIRSUFFIX}/chromium
-  
-   install -m 4755 \
-    chrome_sandbox \
-   $PKG/usr/lib${LIBDIRSUFFIX}/chromium
-  
-  install -m 644 \
-    chrome.pak \
-    content_resources.pak \
-    resources.pak \
-    theme_resources_100_percent.pak \
-    ui_resources_100_percent.pak \
-   $PKG/usr/lib${LIBDIRSUFFIX}/chromium
-  
+
   cp -a \
     locales/ \
     resources/ \
    $PKG/usr/lib${LIBDIRSUFFIX}/chromium
 
-  install -m 644 chrome.1              $PKG/usr/man/man1
-  install -m 644 $CWD/chromium.desktop $PKG/usr/share/applications
+  install -m 644  *.pak                 $PKG/usr/lib${LIBDIRSUFFIX}/chromium
+  install -m 4755 chrome_sandbox        $PKG/usr/lib${LIBDIRSUFFIX}/chromium
+  install -m 644  chrome.1              $PKG/usr/man/man1
+  install -m 644  $CWD/chromium.desktop $PKG/usr/share/applications
 cd -
 
 install -m 644 \
