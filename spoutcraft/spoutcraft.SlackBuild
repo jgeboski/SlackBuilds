@@ -23,12 +23,11 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=spoutcraft
-VERSION=${VERSION:-328}
+VERSION=jnks
 BUILD=${BUILD:-1}
-TAG=${TAG:-_SBo}
 
 CWD=$(pwd)
-TMP=${TMP:-/tmp/SBo}
+TMP=${TMP:-/tmp}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 ARCH=noarch
@@ -42,14 +41,19 @@ mkdir -p \
   $PKG/usr/bin \
   $PKG/usr/share/{$PRGNAM,applications,pixmaps}
 
+wget -O $PKG/usr/share/$PRGNAM/$PRGNAM.jar \
+  "http://build.spout.org/view/All/job/SpoutcraftLauncher/lastSuccessfulBuild/artifact/target/launcher-2.0.0-SNAPSHOT.jar"
+
+VERSION=$(unzip -qc $PKG/usr/share/$PRGNAM/$PRGNAM.jar version)
+
 echo -e "#!/bin/sh\njava -jar /usr/share/$PRGNAM/$PRGNAM.jar $@" \
   > $PKG/usr/bin/$PRGNAM
 
-chmod a+x $PKG/usr/bin/$PRGNAM
+chmod 755 $PKG/usr/bin/$PRGNAM
+chmod 644 $PKG/usr/share/$PRGNAM/$PRGNAM.jar
 
 install -m 644 $CWD/$PRGNAM.desktop $PKG/usr/share/applications
 install -m 644 $CWD/$PRGNAM.png     $PKG/usr/share/pixmaps
-install -m 644 $CWD/launcher-2.0.0-SNAPSHOT.jar $PKG/usr/share/$PRGNAM/$PRGNAM.jar
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
@@ -59,4 +63,4 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
-/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD.${PKGTYPE:-tgz}
