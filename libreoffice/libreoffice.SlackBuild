@@ -132,7 +132,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-system-boost \
   --with-system-cairo \
   --with-system-curl \
-  --with-system-dicts \
   --with-system-db \
   --with-system-expat \
   --with-system-gettext \
@@ -156,8 +155,9 @@ CXXFLAGS="$SLKCFLAGS" \
   --without-fonts \
   --without-gssapi \
   --without-java \
-  --without-krb5 \
-  --without-myspell-dicts
+  --without-krb5
+  # --with-system-dicts
+  # --without-myspell-dicts
   # --with-system-clucene # Need clucene-data
   # --with-system-poppler # N12_GLOBAL__N_18PDFITestE::testXPDFParser test fails
 
