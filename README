@@ -1,4 +1,62 @@
 These are some of my personal SlackBuilds that I have written and use.
-Some of these SlackBuilds do appear on SlackBuilds.org.
 
-You can find packaged tar balls in downloads section.
+There are several SlackBuilds that I have "forked" and modified. The
+original author(s) of these SlackBuilds will most likely not support
+my "forked" version.
+
+If you are unsure of how to use these SlackBuilds, refer to the to the
+HowTo on SlackBuilds.org:
+
+  http://slackbuilds.org/howto/
+
+
+SlackBuild Index:
+
+*  Appears on SlackBuilds.org
+** Forked/Modified SlackBuilds
+
+
+Audio:
+  - deadbeef-mpris
+  - pithos
+
+Development:
+  - geany-plugins*
+
+Games:
+  - minecraft
+  - spoutcraft
+  - xonotic*
+
+Libraries:
+  - fakexinerama
+  - opus
+
+Misc:
+  - mctl
+  - WhatPulse*
+
+Network:
+  - chromium**
+  - hexchat
+  - mangler*
+  - mumble*
+  - murmur*
+  - znc**
+
+Office:
+  - libreoffice
+
+Python:
+  - pyinputevent
+  - python-keyring
+  - python-uinput
+  - virtkey
+
+System:
+  - gnome15
+  - gnome15-plugins
+  - jenkins**
+  - monitorix
+  - squeeze
+  - wine**
