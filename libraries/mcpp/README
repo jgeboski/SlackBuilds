@@ -1,0 +1,4 @@
+MCPP is a portable C/C++ preprocessor, supporting GCC, Visual C++,
+etc. Its source is highly configurable and can generate executables
+of various specs. It accompanies a validation suite to check
+preprocessor's conformance and quality exhaustively.
