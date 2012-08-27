@@ -30,6 +30,7 @@ Games:
 
 Libraries:
   - fakexinerama
+  - Ice
   - mcpp
   - opus
 

@@ -1,0 +1,170 @@
+#!/bin/sh
+
+# Slackware build script for Ice
+
+# Copyright 2012 James Geboski <jgeboski@gmail.com>
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+PRGNAM=Ice
+VERSION=${VERSION:-3.4.2}
+BUILD=${BUILD:-1}
+TAG=${TAG:-_SBo}
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i486 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp/SBo}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+set -e
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $PRGNAM-$VERSION
+tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
+cd $PRGNAM-$VERSION
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+
+# Simple include fixes for GCC 4.7
+patch -p1 < $CWD/patches/gcc47.patch
+
+# A patch for PHP 5.4. Patch provided by mes (ZeroC Staff).
+# http://www.zeroc.com/forums/patches/5603-ice-php-php-5-4-patch.html#post24426
+patch -p1 < $CWD/patches/php54.patch
+
+SUBS[0]="cpp"
+LIBDIR=$PKG/usr/lib${LIBDIRSUFFIX}
+
+#if pkg-config --exists mono; then
+#  SUBS[1]="cs"
+#fi
+
+# Comiple time errors
+#if which javac &>/dev/null; then
+#  SUBS[2]="java"
+#fi
+
+if which php &>/dev/null; then
+  SUBS[3]="php"
+  PHP_DIR=$LIBDIR/php
+fi
+
+if pkg-config --exists python2; then
+  SUBS[4]="py"
+  PY_VER=$(python --version 2>&1 | cut -d ' ' -f 2 | cut -d '.' -f 1-2)
+  PY_DIR=$LIBDIR/python$PY_VER/site-packages/$PRGNAM
+fi
+
+if which ruby &>/dev/null; then
+  RB_VER=$(find /usr/lib${LIBDIRSUFFIX}/ruby -type d -maxdepth 1 -name '*.*.*' -printf %f)
+
+  if [ -n "$RB_VER" ]; then
+    SUBS[5]="rb"
+    RB_DIR=$LIBDIR/ruby/$RB_VER
+  fi
+fi
+
+mkdir -p \
+  $PKG/usr/share/Ice/slice \
+  $PHP_DIR/extensions \
+  $PY_DIR \
+  $RB_DIR
+
+for sub in ${SUBS[@]}; do
+  case $sub in
+    php)
+      libdir=$PHP_DIR/extensions ;;
+    py)
+      libdir=$PY_DIR ;;
+    rb)
+      libdir=$RB_DIR ;;
+    *)
+      libdir=$LIBDIR ;;
+  esac
+
+  make -C $sub \
+    CFLAGS="$SLKCFLAGS" \
+    CXXFLAGS="$SLKCFLAGS -fpermissive" \
+    LDFLAGS="-L$(pwd)/cpp/lib"
+
+  make -C $sub install \
+    prefix=$PKG/usr \
+    embedded_runpath_prefix="" \
+    lp64suffix=$LIBDIRSUFFIX \
+    install_docdir=$PKG/usr/doc/$PRGNAM-$VERSION \
+    install_configdir=$PKG/etc \
+    install_includedir=$PKG/usr/include/Ice \
+    install_libdir=$libdir \
+    install_phpdir=$PHP_DIR \
+    install_pkgconfigdir=$LIBDIR/pkgconfig \
+    install_pythondir=$PY_DIR \
+    install_rubydir=$RB_DIR \
+    install_slicedir=$PKG/usr/share/Ice/slice
+done
+
+mv $PKG/usr/lib/ImportKey.class $PKG/usr/share/Ice
+cp -a slice $PKG/usr/share/Ice
+
+rm -rf \
+  $PKG/etc \
+  $PKG/usr/lib \
+  $PKG/usr/*LICENSE \
+
+find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a \
+  CHANGES ICE_LICENSE LICENSE README RELEASE_NOTES \
+  $PKG/usr/doc/$PRGNAM-$VERSION
+cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
