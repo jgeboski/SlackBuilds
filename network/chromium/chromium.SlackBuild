@@ -34,7 +34,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=chromium
-VERSION=${VERSION:-22.0.1229.10}
+VERSION=${VERSION:-22.0.1229.26}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -81,7 +81,8 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-# When a chromium 
+# A hack around to make sure `chrome` returns 0 when the main chrome
+# process has been notified.
 sed -i \
   "s/chrome::RESULT_CODE_NORMAL_EXIT_PROCESS_NOTIFIED/content::RESULT_CODE_NORMAL_EXIT/" \
  chrome/browser/chrome_browser_main.cc
@@ -120,8 +121,8 @@ build/gyp_chromium --depth=. \
   -Dffmpeg_branding=Chrome \
   -Dlinux_use_gold_flags=0 \
   -Dlinux_use_gold_binary=0
-  #-Duse_system_sqlite=1 # Missing symbols
-  #-Duse_system_ssl=1    # Missing symbols
+  #-Duse_system_sqlite=1
+  #-Duse_system_ssl=1
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS -fno-ipa-cp" \
