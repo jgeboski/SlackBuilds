@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=libreoffice
-VERSION=${VERSION:-3.6.0.4}
+VERSION=${VERSION:-3.6.1.2}
 BUILD=${BUILD:-1}
 
 if [ -z "$ARCH" ]; then
@@ -143,6 +143,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-system-libwpd \
   --with-system-libxml \
   --with-system-mesa-headers \
+  --with-system-mozilla=seamonkey \
+  --with-system-mozilla-headers \
   --with-system-neon \
   --with-system-nss \
   --with-system-odbc \
@@ -158,8 +160,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --without-krb5
   # --with-system-dicts
   # --without-myspell-dicts
-  # --with-system-clucene # Need clucene-data
-  # --with-system-poppler # N12_GLOBAL__N_18PDFITestE::testXPDFParser test fails
+  # --with-system-clucene
+  # --with-system-poppler
 
 if [ ! -e $TMP/external-$VERSION ]; then
   make fetch
