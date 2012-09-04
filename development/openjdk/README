@@ -1,0 +1,6 @@
+The Java Development Kit (JDK) platform allows for the development
+and deployment of projects written in Java programming language. 
+OpenJDK provides a free and open source development kit to be used
+in-place of Oracle's non-free JDK.
+
+This package requires: ant, rhino

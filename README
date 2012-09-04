@@ -22,6 +22,7 @@ Audio:
 
 Development:
   - geany-plugins*
+  - openjdk
 
 Games:
   - minecraft

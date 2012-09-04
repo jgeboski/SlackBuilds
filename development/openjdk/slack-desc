@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+       |-----handy-ruler------------------------------------------------------|
+openjdk: OpenJDK (Java Development Kit)
+openjdk:
+openjdk: The Java Development Kit (JDK) platform allows for the development
+openjdk: and deployment of projects written in Java programming language. 
+openjdk: OpenJDK provides a free and open source development kit to be used
+openjdk: in-place of Oracle's non-free JDK.
+openjdk:
+openjdk: Homepage: http://openjdk.java.net/
+openjdk:
+openjdk:
+openjdk:
