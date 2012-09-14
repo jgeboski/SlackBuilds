@@ -20,6 +20,9 @@ Audio:
   - deadbeef-mpris
   - pithos
 
+Desktop:
+  - compiz
+
 Development:
   - geany-plugins*
   - openjdk
