@@ -23,7 +23,8 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=compiz
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-0.9.8.2}
+BUILD=${BUILD:-3}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -34,7 +35,7 @@ if [ -z "$ARCH" ]; then
 fi
 
 CWD=$(pwd)
-TMP=${TMP:-/tmp/compiz-build}
+TMP=${TMP:-/tmp}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
@@ -52,16 +53,6 @@ else
   LIBDIRSUFFIX=""
 fi
 
-PKGNAM[0]=$PRGNAM
-PKGVER[0]=0.9.8.2
-
-PKGNAM[1]=emerald
-PKGVER[1]=0.9.5
-
-PKGNAM[2]=emerald-themes
-PKGVER[2]=0.5.2
-
-VERSION=${PKGVER[0]}
 CMAKE_VER=$(cmake --version | cut -d ' ' -f3 | cut -d. -f-2)
 
 set -e
@@ -69,16 +60,9 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-
-rm -rf \
-  ${PKGNAM[0]}-${PKGVER[0]} \
-  ${PKGNAM[1]}-${PKGVER[1]} \
-  ${PKGNAM[2]}-${PKGVER[2]}
-
-tar xvf $CWD/${PKGNAM[0]}-${PKGVER[0]}.tar.bz2
-tar xvf $CWD/${PKGNAM[1]}-${PKGVER[1]}.tar.bz2
-tar xvf $CWD/${PKGNAM[2]}-${PKGVER[2]}.tar.bz2
-
+rm -rf $PRGNAM-$VERSION
+tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2
+cd $PRGNAM-$VERSION
 chown -R root:root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
@@ -86,7 +70,6 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-cd $TMP/${PKGNAM[0]}-${PKGVER[0]}
 mkdir -p $PKG/usr/share/cmake-$CMAKE_VER/Modules
 
 if [ -n $LIBDIRSUFFIX ]; then
@@ -115,49 +98,9 @@ cd build
 
   make
   make install DESTDIR=$PKG
-
-  rm -rf $PKG/usr/share/gconf
 cd ..
 
-
-cd $TMP/${PKGNAM[1]}-${PKGVER[1]}
-
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-LDFLAGS="-L/usr/lib${LIBDIRSUFFIX} -ldl -lm" \
-PKG_CONFIG_PATH="/usr/lib${LIBDIRSUFFIX}/pkgconfig" \
-./autogen.sh \
-  --prefix=/usr \
-  --libdir=/usr/lib${LIBDIRSUFFIX} \
-  --mandir=/usr/man \
-  --docdir=/usr/doc/$PRGNAM-$VERSION/${PKGNAM[1]}-${PKGVER[1]} \
-  --build=$ARCH-slackware-linux \
-  -enable-static=no
-
-make
-make install DESTDIR=$PKG
-
-
-cd $TMP/${PKGNAM[2]}-${PKGVER[2]}
-
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-./autogen.sh \
-  --prefix=/usr \
-  --docdir=/usr/doc/${PKGNAM[2]}-${PKGVER[2]} \
-  --build=$ARCH-slackware-linux
-
-make
-make install DESTDIR=$PKG
-
-
-for i in $(seq 0 2); do
-  mkdir -p $PKG/usr/doc/${PKGNAM[$i]}-${PKGVER[$i]}
-
-  cp -a \
-    AUTHORS ChangeLog COPYING* INSTALL NEWS README \
-   $PKG/usr/doc/${PKGNAM[$i]}-${PKGVER[$i]}
-done
+rm -rf $PKG/usr/share/gconf
 
 find $PKG/usr/share/cmake-$CMAKE_VER -type f -name '*.cmake' -exec \
   mv {} $PKG/usr/share/cmake-$CMAKE_VER/Modules \;
@@ -165,9 +108,10 @@ find $PKG/usr/share/cmake-$CMAKE_VER -type f -name '*.cmake' -exec \
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
-find $PKG/usr/man -type f -exec gzip -9 {} \;
-for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a \
+  AUTHORS ChangeLog COPYING* INSTALL NEWS README \
+ $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
