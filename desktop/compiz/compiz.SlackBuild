@@ -52,20 +52,14 @@ else
   LIBDIRSUFFIX=""
 fi
 
-version_get()
-{
-  ver=$(ls -1 $CWD/${1}-?.*.tar.bz2 | tail -1)
-  echo $ver | rev | cut -d- -f1 | cut -d. -f3- | rev
-}
-
 PKGNAM[0]=$PRGNAM
-PKGVER[0]=$(version_get ${PKGNAM[0]})
+PKGVER[0]=0.9.8.2
 
 PKGNAM[1]=emerald
-PKGVER[1]=$(version_get ${PKGNAM[1]})
+PKGVER[1]=0.9.5
 
 PKGNAM[2]=emerald-themes
-PKGVER[2]=$(version_get ${PKGNAM[2]})
+PKGVER[2]=0.5.2
 
 VERSION=${PKGVER[0]}
 CMAKE_VER=$(cmake --version | cut -d ' ' -f3 | cut -d. -f-2)
