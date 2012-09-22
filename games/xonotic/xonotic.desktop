@@ -1,8 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Xonotic
-Comment=Xonotic
-Categories=Application;Game;
+Categories=Game;
 Exec=xonotic-sdl
 Icon=xonotic
 Terminal=false
