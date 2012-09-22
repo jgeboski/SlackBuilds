@@ -4,6 +4,4 @@ reverse-engineered implementation, but is command-line only. Neither
 integrate with the desktop very well, missing things like media key
 support and song notifications.
 
-Pithos requires: gst-python, python-distutils-extra,
-                 gstreamer-plugins-bad with faad2,
-                 gst-plugins-ugly
+Note: gstreamer-plugins-bad must have faad2 support
