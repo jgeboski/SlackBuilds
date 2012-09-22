@@ -5,5 +5,6 @@ DOWNLOAD="http://gsdview.appspot.com/chromium-browser-official/chromium-22.0.122
 MD5SUM="9550c2bb182c2aa8df5b825356f5ad9d"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
+REQUIRES="libevent speex"
 MAINTAINER="James Geboski"
 EMAIL="jgeboski@gmail.com"
