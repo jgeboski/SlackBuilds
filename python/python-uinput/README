@@ -1,4 +1,2 @@
 Python-uinput provides a pythonic API to the Linux uinput-system
 through libsuinput.
-
-This package requires: libsuinput
