@@ -5,5 +5,7 @@ DOWNLOAD="http://www.gnome15.org/downloads/Gnome15/Unstable/gnome15-0.9.0.tar.gz
 MD5SUM="dc46b8ad9cc34a7d409d250278403f4b"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
+REQUIRES="gnome-python gnome-python-desktop lxml pyinotify pyinputevent \
+          python-keyring python-uinput python-xlib pyusb pyxdg virtkey"
 MAINTAINER="James Geboski"
 EMAIL="jgeboski@gmail.com"
