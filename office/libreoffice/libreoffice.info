@@ -15,5 +15,6 @@ MD5SUM=" \
   2555590c1b4395857fc5c469f7f1bd0c"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
+REQUIRES="perl-Archive-Zip"
 MAINTAINER="James Geboski"
 EMAIL="jgeboski@gmail.com"
