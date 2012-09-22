@@ -70,6 +70,8 @@ find . \
 qmake \
   -recursive \
   main.pro \
+  QMAKE_CFLAGS+="$SLKCFLAGS" \
+  QMAKE_CXXFLAGS+="$SLKCFLAGS" \
   CONFIG+=no-update \
   CONFIG+=no-client \
   CONFIG+=no-ice \
