@@ -5,5 +5,6 @@ DOWNLOAD="http://www.gnome15.org/downloads/Gnome15/Unstable/gnome15-plugins-0.9.
 MD5SUM="f1f182cc901ebaa401924a1d2e2923ad"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
+REQUIRES="gnome15"
 MAINTAINER="James Geboski"
 EMAIL="jgeboski@gmail.com"
