@@ -5,6 +5,6 @@ DOWNLOAD="https://launchpad.net/compiz/0.9.8/0.9.8.2/+download/compiz-0.9.8.2.ta
 MD5SUM="35547119800700b95b00d461322bcb4e"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
+REQUIRES="glibmm protobuf"
 MAINTAINER="James Geboski"
 EMAIL="jgeboski@gmail.com"
-REQUIRES="glibmm protobuf"
