@@ -9,5 +9,3 @@ You will need to set a user and group for the web files:
 
 DOCROOT can be set to override the default web directory of:
   # DOCROOT=/var/www/htdocs/monitorix ./monitorix.SlackBuild
-
-This package requires: rrdtool
