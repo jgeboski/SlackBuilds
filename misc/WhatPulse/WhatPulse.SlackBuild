@@ -66,7 +66,7 @@ chown root:$WHATPULSE_GROUP $PKG/usr/bin/WhatPulse
 chmod 0750 $PKG/usr/bin/WhatPulse
 
 mkdir -p $PKG/lib/udev/rules.d
-echo "KERNEL==\"event*\", NAME=\"input/%k\", MODE=\"640\", GROUP=\"${WHATPULSE_GROUP}\"" \
+echo "KERNEL==\"event*\", NAME=\"input/%k\", MODE:=\"640\", GROUP:=\"${WHATPULSE_GROUP}\"" \
   > $PKG/lib/udev/rules.d/99-whatpulse-input.rules
 
 mkdir -p $PKG/install
