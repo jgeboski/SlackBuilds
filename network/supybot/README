@@ -1,0 +1,5 @@
+Supybot is an easy to configure and highly flexible IRC bot written
+in the python scripting language.
+
+To use a different supybot user:
+  # SUPYBOT_USER=user ./supybot.SlackBuild

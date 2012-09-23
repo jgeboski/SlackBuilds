@@ -49,7 +49,7 @@ Network:
   - mangler*
   - mumble*
   - murmur*
-  - znc**
+  - supybot
 
 Office:
   - libreoffice
