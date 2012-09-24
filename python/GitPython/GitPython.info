@@ -5,6 +5,6 @@ DOWNLOAD="http://pypi.python.org/packages/source/G/GitPython/GitPython-0.3.2.RC1
 MD5SUM="849082fe29adc653a3621465213cab96"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
-REQUIRES=""
+REQUIRES="gitdb"
 MAINTAINER="James Geboski"
 EMAIL="jgeboski@gmail.com"

@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # Slackware build script for GitPython
+
 # Copyright 2012 James Geboski <jgeboski@gmail.com>
 # All rights reserved.
 #
