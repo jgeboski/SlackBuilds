@@ -94,6 +94,7 @@ qmake \
   QMAKE_CFLAGS+="$SLKCFLAGS" \
   QMAKE_CXXFLAGS+="$SLKCFLAGS" \
   DEFINES*="PLUGIN_PATH=/usr/lib${LIBDIRSUFFIX}/mumble" \
+  CONFIG+=bundled-celt \
   CONFIG+=no-server \
   CONFIG+=no-bundled-speex \
   CONFIG+=no-pulseaudio \
