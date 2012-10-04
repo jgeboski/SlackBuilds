@@ -23,6 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=libreoffice
+SRCNAM=libreoffice-core
 VERSION=${VERSION:-3.6.1.2}
 BUILD=${BUILD:-1}
 
@@ -58,41 +59,9 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-
-PKGNAM=(
-  $PRGNAM-binfilter-$VERSION
-  $PRGNAM-core-$VERSION
-  $PRGNAM-dictionaries-$VERSION
-  $PRGNAM-help-$VERSION
-  $PRGNAM-translations-$VERSION
-)
-
-rm -rf ${PKGNAM[@]}
-
-tar xvf $CWD/${PKGNAM[1]}.tar.xz
-tar xvf $CWD/${PKGNAM[2]}.tar.xz
-tar xvf $CWD/${PKGNAM[3]}.tar.xz
-
-mv \
-  ${PKGNAM[2]}/dictionaries \
-  ${PKGNAM[3]}/helpcontent2 \
- ${PKGNAM[1]}
-
-if [ -e $CWD/${PKGNAM[0]}.tar.xz ]; then
-  tar xvf $CWD/${PKGNAM[0]}.tar.xz
-  mv ${PKGNAM[0]}/binfilter ${PKGNAM[1]}
-  BINFILTER="enable"
-else
-  BINFILTER="disable"
-fi
-
-if [ -e $CWD/${PKGNAM[4]}.tar.xz ]; then
-  tar xvf $CWD/${PKGNAM[4]}.tar.xz
-  mv ${PKGNAM[4]}/translations ${PKGNAM[1]}
-fi
-
-cd ${PKGNAM[1]}
-
+rm -rf $SRCNAM-$VERSION
+tar xvf $CWD/$SRCNAM-$VERSION.tar.xz
+cd $SRCNAM-$VERSION
 chown -R root:root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
@@ -118,12 +87,13 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-mozilla \
   --disable-rpath \
   --disable-zenity \
-  --$BINFILTER-binfilter \
+  --enable-binfilter \
   --enable-dbus \
   --enable-gio \
   --enable-mergelibs \
   --enable-python=system \
   --enable-release-build \
+  --with-help \
   --with-lang="$LANGS" \
   --with-external-dict-dir=/usr/share/hunspell \
   --with-external-tar="$TMP/external-$VERSION" \
