@@ -46,14 +46,15 @@ wget -O $PKG/usr/share/$PRGNAM/$PRGNAM.jar \
 
 VERSION=$(unzip -qc $PKG/usr/share/$PRGNAM/$PRGNAM.jar version)
 
-echo -e "#!/bin/sh\njava -jar /usr/share/$PRGNAM/$PRGNAM.jar $@" \
-  > $PKG/usr/bin/$PRGNAM
-
-chmod 755 $PKG/usr/bin/$PRGNAM
-chmod 644 $PKG/usr/share/$PRGNAM/$PRGNAM.jar
-
 install -m 644 $CWD/$PRGNAM.desktop $PKG/usr/share/applications
 install -m 644 $CWD/$PRGNAM.png     $PKG/usr/share/pixmaps
+
+cat > $PKG/usr/bin/$PRGNAM <<EOF
+#!/bin/sh
+java -jar /usr/share/$PRGNAM/$PRGNAM.jar \$@
+EOF
+
+chmod 755 $PKG/usr/bin/$PRGNAM
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
