@@ -43,6 +43,9 @@ Misc:
   - mctl
   - WhatPulse*
 
+Multimedia:
+  - chrome-flapper
+
 Network:
   - chromium**
   - hexchat
