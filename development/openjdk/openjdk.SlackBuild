@@ -194,16 +194,27 @@ fi
 rm -rf $PKG/usr/lib${LIBDIRSUFFIX}/java/{,jre}/man
 
 sed -i \
-  -e "s,@JAVA_HOME@,/usr/lib${LIBDIRSUFFIX}/java," \
-  -e "s,@JAVA_LD@,/usr/lib${LIBDIRSUFFIX}/java/jre/lib/$JAVA_ARCH," \
- $PKG/etc/profile.d/openjdk.{csh,sh}
-
-sed -i \
   "s,\(nssLibraryDirectory = \).*,\1/usr/lib${LIBDIRSUFFIX}/seamonkey," \
  $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security/nss.cfg
 
 sed -i "s,/usr/bin/,,"      $PKG/usr/share/applications/*.desktop
 sed -i "s/javaws.png/java/" $PKG/usr/share/applications/javaws.desktop
+
+cat > $PKG/etc/profile.d/$PRGNAM.csh <<EOF
+#!/bin/csh
+setenv JAVA_HOME /usr/lib${LIBDIRSUFFIX}/java
+setenv PATH \${PATH}:\${JAVA_HOME}/bin:\${JAVA_HOME}/jre/bin
+setenv LD_LIBRARY_PATH \${LD_LIBRARY_PATH}:/usr/lib${LIBDIRSUFFIX}/java/jre/lib/$JAVA_ARCH
+EOF
+
+cat > $PKG/etc/profile.d/$PRGNAM.sh <<EOF
+#!/bin/sh
+export JAVA_HOME=/usr/lib${LIBDIRSUFFIX}/java
+export PATH="\${PATH}:\${JAVA_HOME}/bin:\${JAVA_HOME}/jre/bin"
+export LD_LIBRARY_PATH="\${LD_LIBRARY_PATH}:/usr/lib${LIBDIRSUFFIX}/java/jre/lib/$JAVA_ARCH"
+EOF
+
+chmod a+x $PKG/etc/profile.d/$PRGNAM.{csh,sh}
 
 # /extra/source/java/java.SlackBuild
 cd $PKG/usr/lib${LIBDIRSUFFIX}
