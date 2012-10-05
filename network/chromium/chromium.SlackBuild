@@ -35,7 +35,7 @@
 
 PRGNAM=chromium
 VERSION=${VERSION:-22.0.1229.26}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -128,21 +128,19 @@ CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS -fno-ipa-cp" \
 make chrome chrome_sandbox BUILDTYPE=Release
 
-cd out/Release/
-  mkdir -p \
-    $PKG/usr/bin \
-    $PKG/usr/lib${LIBDIRSUFFIX}/chromium \
-    $PKG/usr/man/man1 \
-    $PKG/usr/share/{applications,pixmaps}
+mkdir -p \
+  $PKG/usr/bin \
+  $PKG/usr/lib${LIBDIRSUFFIX}/chromium \
+  $PKG/usr/man/man1 \
+  $PKG/usr/share/{applications,pixmaps}
 
+cd out/Release/
   install -m 755 \
-    chrome \
-    libffmpegsumo.so \
+    chrome libffmpegsumo.so \
    $PKG/usr/lib${LIBDIRSUFFIX}/chromium
 
   cp -a \
-    locales/ \
-    resources/ \
+    locales/ resources/ \
    $PKG/usr/lib${LIBDIRSUFFIX}/chromium
 
   install -m 644  *.pak                 $PKG/usr/lib${LIBDIRSUFFIX}/chromium
@@ -157,8 +155,12 @@ install -m 644 \
 
 find $PKG -name '*.d' -type f -delete
 
-ln -s /usr/lib${LIBDIRSUFFIX}/chromium/chrome         $PKG/usr/bin/chrome
-ln -s /usr/lib${LIBDIRSUFFIX}/chromium/chrome_sandbox $PKG/usr/bin/chrome_sandbox
+cat > $PKG/usr/bin/chrome <<EOF
+#!/bin/sh
+/usr/lib${LIBDIRSUFFIX}/chromium/chrome \$CHROME_OPTIONS \$@
+EOF
+
+chmod a+x $PKG/usr/bin/chrome
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
@@ -174,7 +176,6 @@ cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
