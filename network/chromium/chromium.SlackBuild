@@ -34,8 +34,8 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=chromium
-VERSION=${VERSION:-22.0.1229.92}
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-24.0.1287.1}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -111,18 +111,26 @@ build/gyp_chromium --depth=. \
   -Duse_system_icu=1 \
   -Duse_system_libevent=1 \
   -Duse_system_libjpeg=1 \
-  -Duse_system_libpng=1 \
+  -Duse_system_libpng=0 \
   -Duse_system_libusb=1 \
   -Duse_system_libxml=1 \
   -Duse_system_speex=1 \
+  -Duse_system_sqlite=0 \
+  -Duse_system_ssl=0 \
   -Duse_system_xdg_utils=1 \
   -Duse_system_yasm=1 \
-  -Duse_system_zlib=1 \
+  -Duse_system_zlib=0 \
   -Dffmpeg_branding=Chrome \
   -Dlinux_use_gold_flags=0 \
   -Dlinux_use_gold_binary=0
+
+  ## Causes renderers to hang
+  #-Duse_system_libpng=1
+
+  ## Symbol issues
   #-Duse_system_sqlite=1
   #-Duse_system_ssl=1
+  #-Duse_system_zlib=1
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS -fno-ipa-cp" \
