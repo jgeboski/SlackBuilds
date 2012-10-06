@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Slackware build script for flash-ppapi-plugin
+# Slackware build script for chrome-flapper
 
 # Copyright 2012 James Geboski <jgeboski@gmail.com>
 # All rights reserved.
@@ -23,8 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=chrome-flapper
-VERSION=${VERSION:-11.3.31.331}
-CHANNEL=${CHANNEL:-stable}
+VERSION=${VERSION:-unstable}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -57,7 +56,7 @@ mkdir -p \
   $PKG/etc/profile.d \
   $PKG/opt/google
 
-ar p $CWD/google-chrome-${CHANNEL}_current_${DEBARCH}.deb data.tar.lzma | \
+ar p $CWD/google-chrome-${VERSION}_current_${DEBARCH}.deb data.tar.lzma | \
   tar xvJC $PKG ./opt/google/chrome/PepperFlash
 
 mv $PKG/opt/google/chrome/PepperFlash $PKG/opt/google
