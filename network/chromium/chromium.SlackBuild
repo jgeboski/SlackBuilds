@@ -34,7 +34,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=chromium
-VERSION=${VERSION:-24.0.1287.1}
+VERSION=${VERSION:-24.0.1290.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -110,6 +110,7 @@ build/gyp_chromium --depth=. \
   -Duse_system_flac=1 \
   -Duse_system_icu=1 \
   -Duse_system_libevent=1 \
+  -Duse_system_libexif=1 \
   -Duse_system_libjpeg=1 \
   -Duse_system_libpng=0 \
   -Duse_system_libusb=1 \
