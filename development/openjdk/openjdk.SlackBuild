@@ -120,8 +120,7 @@ make \
 cp -a openjdk.build/j2sdk-image          $PKG/usr/lib${LIBDIRSUFFIX}/java
 cp -a openjdk.build/j2sdk-image/man/man1 $PKG/usr/man
 
-install -m 644 *.desktop                       $PKG/usr/share/applications
-install -m 755 $CWD/profile.d/openjdk.{csh,sh} $PKG/etc/profile.d
+install -m 644 *.desktop $PKG/usr/share/applications
 
 for size in 16 24 32 48; do
   install -m 644 \
