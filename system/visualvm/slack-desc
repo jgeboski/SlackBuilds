@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+        |-----handy-ruler------------------------------------------------------|
+visualvm: VisualVM (Java application monitoring tool)
+visualvm:
+visualvm: VisualVM is a tool to monitor and troubleshoot Java applications.
+visualvm: It runs on Oracle/Sun JDK 6, but is able to monitor applications
+visualvm: running on JDK 1.4 and higher. It utilizes various available
+visualvm: technologies like jvmstat, JMX, the Serviceability Agent (SA), and
+visualvm: the Attach API to get the data and automatically uses the fastest
+visualvm: and most lightweight technology to impose minimal overhead on 
+visualvm: monitored applications.
+visualvm:
+visualvm: Homepage: http://visualvm.java.net/
