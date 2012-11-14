@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=hexchat
-VERSION=${VERSION:-2.9.2}
+VERSION=${VERSION:-2.9.4}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -70,7 +70,7 @@ find . \
  -exec chmod 644 {} \;
 
 # Disable GConf
-sed -i "s/AC_PATH_PROG(GCONFTOOL.*/GCONFTOOL=no/" configure.in
+sed -i "s/AC_PATH_PROG(GCONFTOOL.*/GCONFTOOL=no/" configure.ac
 
 ./autogen.sh
 
@@ -93,9 +93,7 @@ find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | gr
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a \
-  ChangeLog COPYING HACKING README \
-  $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a share/doc/* $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
