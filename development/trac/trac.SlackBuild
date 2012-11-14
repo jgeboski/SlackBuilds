@@ -2,6 +2,7 @@
 
 # Slackware build script for Trac
 # Written by Eugene Suter <easuter at gmail.com>
+# Maintained by James Geboski <jgeboski@gmail.com>
 
 PRGNAM="trac"
 SRCNAM="Trac"
@@ -54,7 +55,8 @@ find . \
 python setup.py install --root=$PKG
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a doc/README AUTHORS COPYING ChangeLog \
+cp -a \
+  doc/README AUTHORS COPYING ChangeLog \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
