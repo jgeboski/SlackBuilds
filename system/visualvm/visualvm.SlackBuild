@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=visualvm
-VERSION=${VERSION:-1.3.4}
+VERSION=${VERSION:-1.3.5}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -87,6 +87,7 @@ rm -rf \
   $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/platform/lib/nbexec.dll \
   $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/platform/lib/nbexec.exe \
   $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/platform/modules/lib/x86 \
+  $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/platform/modules/lib/amd64/*.dll \
   $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/profiler/lib/deployed \
   $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/profiler/lib/jfluid-server-15.jar
 
