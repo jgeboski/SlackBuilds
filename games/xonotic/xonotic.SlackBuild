@@ -99,7 +99,9 @@ install -m 644 $CWD/xonotic.desktop        $PKG/usr/share/applications
 install -m 644 misc/logos/xonotic_icon.svg $PKG/usr/share/pixmaps/xonotic.svg
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a COPYING Docs/* $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a \
+  COPYING Docs/* \
+  $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
