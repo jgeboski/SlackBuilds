@@ -2,6 +2,7 @@
 
 # Slackware build script for Genshi
 # Written by Eugene Suter <easuter at gmail.com>
+# Maintained by James Geboski <jgeboski@gmail.com>
 
 PRGNAM="genshi"
 SRCNAM="Genshi"
