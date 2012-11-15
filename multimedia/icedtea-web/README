@@ -1,0 +1,9 @@
+The IcedTea browser plugin is a free and open source Java NPAPI
+plugin that works in unison with OpenJDK. It supports implementations
+of the Java programming language in the web browser via Java applets
+and Java Web Start applications.
+
+By default this script uses seamonkey-plugin to build the NPAPI based
+plugin, however, this can be changed via:
+
+  # MOZILLA_PLUGIN=mozilla-plugin ./icedtea-web.SlackBuild
