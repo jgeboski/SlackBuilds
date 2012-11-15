@@ -23,14 +23,11 @@
 
 PRGNAM=openjdk
 VERSION=${VERSION:-7u9_b30}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 NUMJOBS=${NUMJOBS:-8}
 
-PKGNAM[0]=icedtea
-PKGVER[0]=${ICEDTEA_VERSION:-2.3.3}
-
-PKGNAM[1]=icedtea-web
-PKGVER[1]=${ICEDTEA_WEB_VERSION:-1.3}
+PKGNAM=icedtea
+PKGVER=${ICEDTEA_VERSION:-2.3.3}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -68,17 +65,9 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-
-rm -rf \
-  ${PKGNAM[0]}-${PKGVER[0]} \
-  ${PKGNAM[1]}-${PKGVER[1]}
-
-tar xvf $CWD/${PKGNAM[0]}-${PKGVER[0]}.tar.gz
-
-if [ -e $CWD/${PKGNAM[1]}-${PKGVER[1]}.tar.gz ]; then
-  tar xvf $CWD/${PKGNAM[1]}-${PKGVER[1]}.tar.gz
-fi
-
+rm -rf $PKGNAM-$PKGVER
+tar xvf $CWD/$PKGNAM-$PKGVER.tar.gz
+cd $PKGNAM-$PKGVER
 chown -R root:root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
@@ -86,13 +75,11 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-cd ${PKGNAM[0]}-${PKGVER[0]}
-
-SOURCES=$TMP/${PKGNAM[0]}-sources-${PKGVER[0]}
+SOURCES=$TMP/$PKGNAM-sources-$PKGVER
 
 mkdir -p \
   $PKG/etc/profile.d \
-  $PKG/usr/doc/$PRGNAM-$VERSION/${PKGNAM[0]}-${PKGVER[0]} \
+  $PKG/usr/doc/$PRGNAM-$VERSION/$PKGNAM-$PKGVER \
   $PKG/usr/lib${LIBDIRSUFFIX} \
   $PKG/usr/man \
   $PKG/usr/share/applications \
@@ -106,7 +93,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-docs \
   --enable-nss \
   --with-jdk-home=/usr/lib${LIBDIRSUFFIX}/java \
-  --with-parallel-jobs=$NUMJOBS
+  --with-parallel-jobs=$NUMJOBS \
+  --with-rhino=/usr/share/ant/lib/rhino.jar
 
 make \
   CORBA_SRC_ZIP=$SOURCES/corba.tar.gz \
@@ -121,6 +109,8 @@ cp -a openjdk.build/j2sdk-image          $PKG/usr/lib${LIBDIRSUFFIX}/java
 cp -a openjdk.build/j2sdk-image/man/man1 $PKG/usr/man
 
 install -m 644 *.desktop $PKG/usr/share/applications
+
+rm -rf $PKG/usr/lib${LIBDIRSUFFIX}/java/{,jre}/man
 
 for size in 16 24 32 48; do
   install -m 644 \
@@ -137,66 +127,17 @@ cd certs
   install -m 644 cacerts $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security
 cd -
 
-cp -a \
-  openjdk/{ASSEMBLY_EXCEPTION,LICENSE,README,THIRD_PARTY_README} \
- $PKG/usr/doc/$PRGNAM-$VERSION
-
-cp -a \
-  AUTHORS ChangeLog COPYING HACKING INSTALL NEWS README THANKYOU \
- $PKG/usr/doc/$PRGNAM-$VERSION/${PKGNAM[0]}-${PKGVER[0]}
-
-if pkg-config --exists seamonkey-plugin; then
-  MOZILLA_PLUGIN=seamonkey-plugin
-fi
-
-if [ -n "$MOZILLA_PLUGIN" -a -d "$TMP/${PKGNAM[1]}-${PKGVER[1]}" ]; then
-  mkdir -p \
-    $PKG/usr/doc/$PRGNAM-$VERSION/${PKGNAM[1]}-${PKGVER[1]} \
-    $PKG/usr/share/icedtea-web
-
-  cd $TMP/${PKGNAM[1]}-${PKGVER[1]}
-
-  CFLAGS="$SLKCFLAGS" \
-  CXXFLAGS="$SLKCFLAGS" \
-  MOZILLA_CFLAGS=$(pkg-config --cflags $MOZILLA_PLUGIN) \
-  MOZILLA_LIBS=$(pkg-config --cflags $MOZILLA_PLUGIN) \
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}/mozilla/plugins \
-    --mandir=/usr/man \
-    --build=$ARCH-slackware-linux \
-    --disable-docs \
-    --with-gtk=2 \
-    --with-jdk-home=$PKG/usr/lib${LIBDIRSUFFIX}/java \
-    --with-jre-home=$PKG/usr/lib${LIBDIRSUFFIX}/java/jre
-
-  JAVA_HOME=/usr/lib${LIBDIRSUFFIX}/java/jre
-
-  sed -i \
-    "s,\(-DICEDTEA_WEB_JRE=\"\).*\(\" .*\),\1\\\\\"$JAVA_HOME\\\\\"\2," \
-   Makefile
-
-  make -j$NUMJOBS
-  make install DESTDIR=$PKG
-
-  install -m 644 itweb-settings.desktop $PKG/usr/share/applications
-
-  sed -i "s,^\(JAVA=\).*,\1java," $PKG/usr/bin/itweb-settings
-  sed -i "s/javaws/java/" $PKG/usr/share/applications/itweb-settings.desktop
-
-  cp -a \
-    AUTHORS ChangeLog COPYING INSTALL NEWS README \
-   $PKG/usr/doc/$PRGNAM-$VERSION/${PKGNAM[1]}-${PKGVER[1]}
-fi
-
-rm -rf $PKG/usr/lib${LIBDIRSUFFIX}/java/{,jre}/man
-
 sed -i \
   "s,\(nssLibraryDirectory = \).*,\1/usr/lib${LIBDIRSUFFIX}/seamonkey," \
  $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security/nss.cfg
 
 sed -i "s,/usr/bin/,,"      $PKG/usr/share/applications/*.desktop
 sed -i "s/javaws.png/java/" $PKG/usr/share/applications/javaws.desktop
+
+# /extra/source/java/java.SlackBuild
+cd $PKG/usr/lib${LIBDIRSUFFIX}
+  ln -sf java/jre/lib/$JAVA_ARCH/server/libjvm.so .
+cd -
 
 cat > $PKG/etc/profile.d/$PRGNAM.csh <<EOF
 #!/bin/csh
@@ -214,11 +155,6 @@ EOF
 
 chmod a+x $PKG/etc/profile.d/$PRGNAM.{csh,sh}
 
-# /extra/source/java/java.SlackBuild
-cd $PKG/usr/lib${LIBDIRSUFFIX}
-  ln -sf java/jre/lib/$JAVA_ARCH/server/libjvm.so .
-cd -
-
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
@@ -227,9 +163,17 @@ for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; r
 
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
+cp -a \
+  openjdk/{ASSEMBLY_EXCEPTION,LICENSE,README,THIRD_PARTY_README} \
+ $PKG/usr/doc/$PRGNAM-$VERSION
+
+cp -a \
+  AUTHORS ChangeLog COPYING HACKING INSTALL NEWS README THANKYOU \
+ $PKG/usr/doc/$PRGNAM-$VERSION/$PKGNAM-$PKGVER
+
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/doinst.sh > $PKG/install/doinst.sh
+cat $CWD/doinst.sh  > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD.${PKGTYPE:-tgz}
