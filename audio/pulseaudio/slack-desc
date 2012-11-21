@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+          |-----handy-ruler------------------------------------------------------|
+pulseaudio: PulseAudio (sound daemon)
+pulseaudio:
+pulseaudio: PulseAudio is a sound system for POSIX OSes, meaning that it is a
+pulseaudio: proxy for your sound applications. It allows you to do advanced
+pulseaudio: operations on your sound data as it passes between your application
+pulseaudio: and your hardware. Things like transferring the audio to a different
+pulseaudio: machine, changing the sample format or channel count and mixing
+pulseaudio: several sounds into one are easily achieved using a sound server.
+pulseaudio:
+pulseaudio: Homepage: http://www.pulseaudio.org/
+pulseaudio:
