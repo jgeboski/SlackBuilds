@@ -24,7 +24,7 @@
 
 PRGNAM=mumble
 VERSION=${VERSION:-1.2.3}
-BUILD=${BUILD:-4}
+BUILD=${BUILD:-5}
 TAG=${TAG:-_SBo}
 
 G15=${G15:-no}
@@ -88,6 +88,10 @@ find . \
 # to be directly set.
 patch -p1 < $CWD/patches/MainWindow-set-the-window-icon.patch
 
+if ! pkg-config --exists libpulse; then
+  BUILD_PULSE="CONFIG+=no-pulseaudio"
+fi
+
 qmake \
   -recursive \
   main.pro \
@@ -97,12 +101,12 @@ qmake \
   CONFIG+=bundled-celt \
   CONFIG+=no-server \
   CONFIG+=no-bundled-speex \
-  CONFIG+=no-pulseaudio \
   CONFIG+=no-speechd \
   CONFIG+=no-update \
   CONFIG+=no-embed-qt-translations \
   CONFIG+=no-ice \
   CONFIG+=no-bonjour \
+  $BUILD_PULSE \
   $BUILD_G15 \
   $BUILD_OVERLAY
 
