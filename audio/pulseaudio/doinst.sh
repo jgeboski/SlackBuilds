@@ -23,5 +23,3 @@ config etc/pulse/client.conf.new
 config etc/pulse/daemon.conf.new
 config etc/pulse/default.pa.new
 config etc/pulse/system.pa.new
-
-preserve_perms etc/rc.d/rc.pulseaudio.new
