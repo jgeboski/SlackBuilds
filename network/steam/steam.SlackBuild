@@ -59,11 +59,6 @@ mv $PKG/usr/share/doc $PKG/usr/doc
 mv $PKG/usr/share/man $PKG/usr/man
 mv $PKG/usr/doc/steam $PKG/usr/doc/$PRGNAM-$VERSION
 
-# Fix a "broken" conditional
-sed -i \
-  's;\[ $NEEDSINSTALL;\[ -z "$NEEDSINSTALL";' \
- $PKG/usr/bin/steam
-
 # Show the client upon startup
 sed -i \
   's;steam %U;steam steam://open/games;' \
