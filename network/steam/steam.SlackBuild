@@ -24,7 +24,7 @@
 
 PRGNAM=steam
 VERSION=${VERSION:-latest}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 TAG=${TAG:-_SBo}
 ARCH=noarch
 
@@ -53,11 +53,21 @@ ar xv $CWD/$PRGNAM.deb
 
 VERSION=$(tar xvOf control.tar.gz ./control | grep -i version: | cut -d' ' -f2)
 
-tar xvf data.tar.gz -C $PKG
+mkdir -p $PRGNAM-$VERSION
+cd $PRGNAM-$VERSION
+tar xvf ../data.tar.gz
 
-mv $PKG/usr/share/doc $PKG/usr/doc
-mv $PKG/usr/share/man $PKG/usr/man
-mv $PKG/usr/doc/steam $PKG/usr/doc/$PRGNAM-$VERSION
+mkdir -p $PKG/usr/{bin,doc,share}
+
+cp -a \
+  usr/lib \
+  usr/share/man \
+ $PKG/usr
+
+cp -a usr/share/doc/steam $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a usr/share/{applications,icons,pixmaps} $PKG/usr/share
+
+install -m 755 usr/bin/steam $PKG/usr/bin
 
 # Show the client upon startup
 sed -i \
