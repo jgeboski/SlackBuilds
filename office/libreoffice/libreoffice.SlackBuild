@@ -140,6 +140,8 @@ fi
 make build
 make distro-pack-install DESTDIR=$PKG
 
+rm -f $PKG/usr/share/applications/*.desktop
+
 for app in base calc draw impress math startcenter writer ; do
   sed -i \
     "s/$PRGNAM\(\s-\)/loffice\1/g" \
