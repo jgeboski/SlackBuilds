@@ -42,9 +42,9 @@ mkdir -p \
   $PKG/usr/share/{$PRGNAM,applications,pixmaps}
 
 wget -O $PKG/usr/share/$PRGNAM/$PRGNAM.jar \
-  "http://build.spout.org/view/All/job/SpoutcraftLauncher/lastSuccessfulBuild/artifact/target/launcher-2.0.0-SNAPSHOT.jar"
+  "http://build.spout.org/view/All/job/SpoutcraftLauncher/lastSuccessfulBuild/artifact/target/launcher-3.0.0-SNAPSHOT.jar"
 
-VERSION=$(unzip -qc $PKG/usr/share/$PRGNAM/$PRGNAM.jar version)
+VERSION=$(unzip -qc $PKG/usr/share/$PRGNAM/$PRGNAM.jar org/spoutcraft/launcher/resources/version)
 
 install -m 644 $CWD/$PRGNAM.desktop $PKG/usr/share/applications
 install -m 644 $CWD/$PRGNAM.png     $PKG/usr/share/pixmaps
