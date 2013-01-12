@@ -103,7 +103,8 @@ make \
   JAXWS_SRC_ZIP=$SOURCES/jaxws.tar.gz \
   JDK_SRC_ZIP=$SOURCES/jdk.tar.gz \
   LANGTOOLS_SRC_ZIP=$SOURCES/langtools.tar.gz \
-  OPENJDK_SRC_ZIP=$SOURCES/openjdk.tar.gz
+  OPENJDK_SRC_ZIP=$SOURCES/openjdk.tar.gz \
+  #ALT_COMPILER_PATH="/usr/bin/32"
 
 cp -a openjdk.build/j2sdk-image          $PKG/usr/lib${LIBDIRSUFFIX}/java
 cp -a openjdk.build/j2sdk-image/man/man1 $PKG/usr/man
