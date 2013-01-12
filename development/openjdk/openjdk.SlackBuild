@@ -123,7 +123,10 @@ cd certs
   find /usr/share/ca-certificates -type f -name '*.crt' \
     -exec openssl x509 -text -in {} \; > certs.crt
 
-  perl $CWD/generate-cacerts.pl $PKG/usr/lib64/java/bin/keytool certs.crt
+  perl $CWD/generate-cacerts.pl \
+    $PKG/usr/lib${LIBDIRSUFFIX}/java/bin/keytool \
+    certs.crt
+
   install -m 644 cacerts $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security
 cd -
 
