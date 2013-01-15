@@ -23,11 +23,11 @@
 
 PRGNAM=openjdk
 VERSION=${VERSION:-7u9_b30}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 NUMJOBS=${NUMJOBS:-8}
 
 PKGNAM=icedtea
-PKGVER=${ICEDTEA_VERSION:-2.3.3}
+PKGVER=${ICEDTEA_VERSION:-2.3.4}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -130,10 +130,6 @@ cd certs
 
   install -m 644 cacerts $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security
 cd -
-
-sed -i \
-  "s,\(nssLibraryDirectory = \).*,\1/usr/lib${LIBDIRSUFFIX}/seamonkey," \
- $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security/nss.cfg
 
 sed -i "s,/usr/bin/,,"      $PKG/usr/share/applications/*.desktop
 sed -i "s/javaws.png/java/" $PKG/usr/share/applications/javaws.desktop
