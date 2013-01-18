@@ -23,7 +23,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=jenkins
-VERSION=${VERSION:-1.486}
+VERSION=${VERSION:-latest}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -57,6 +57,9 @@ mkdir -p \
   $PKG/usr/bin \
   $PKG/usr/share/$PRGNAM \
   $PKG/var/{lib,log,run}/$PRGNAM
+
+VERSION=$(unzip -qc $CWD/jenkins.war META-INF/MANIFEST.MF | \
+          grep Jenkins-Version | cut -d' ' -f2 | tr -d '\r')
 
 install -m 644 $CWD/files/$PRGNAM.conf      $PKG/etc/$PRGNAM.conf.new
 install -m 644 $CWD/files/logrotate.$PRGNAM $PKG/etc/logrotate.d/$PRGNAM.new
