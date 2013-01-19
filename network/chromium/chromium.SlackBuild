@@ -34,7 +34,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=chromium
-VERSION=${VERSION:-25.0.1325.0}
+VERSION=${VERSION:-26.0.1387.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -71,7 +71,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2
+tar xvf $CWD/$PRGNAM-$VERSION.tar.xz
 cd $PRGNAM-$VERSION
 
 chown -R root:root .
@@ -89,17 +89,21 @@ sed -i \
 
 build/gyp_chromium --depth=. \
   -Dgcc_version=47 \
+  -Dpython_ver=2.7 \
   -Dremoting=0 \
   -Dchromeos=0 \
   -Dwerror=0 \
+  -Dfastbuild=1 \
   -Dremove_webcore_debug_symbols=1 \
   -Dno_strict_aliasing=1 \
   -Dwerror= \
   -Dlinux_sandbox_path=/usr/lib${LIBDIRSUFFIX}/chromium/chrome_sandbox \
   -Dlinux_strip_binary=1 \
+  -Dlinux_strip_reliability_tests=1 \
+  -Dlinux_link_libspeechd=1 \
   -Dproprietary_codecs=1 \
   -Ddisable_nacl=1 \
-  -Denable_webrtc=0 \
+  -Denable_google_now=0 \
   -Duse_gconf=0 \
   -Duse_gnome_keyring=0 \
   -Duse_kerberos=0 \
@@ -116,7 +120,9 @@ build/gyp_chromium --depth=. \
   -Duse_system_libpng=0 \
   -Duse_system_libusb=1 \
   -Duse_system_libxml=1 \
-  -Duse_system_protobuf=0 \
+  -Duse_system_mesa=0 \
+  -Duse_system_nspr=0 \
+  -Duse_system_protobuf=1 \
   -Duse_system_speex=1 \
   -Duse_system_sqlite=0 \
   -Duse_system_ssl=0 \
@@ -127,11 +133,17 @@ build/gyp_chromium --depth=. \
   -Dlinux_use_gold_flags=0 \
   -Dlinux_use_gold_binary=0
 
+  ## Missing gyp file
+  # -Ddisable_nacl=0
+
   ## Causes renderers to hang
   #-Duse_system_libpng=1
 
+  ## Causes segfault on startup
+  # -Duse_system_nspr=1
+
   ## Symbol issues
-  #-Duse_system_protobuf=1
+  #-Duse_system_mesa=1
   #-Duse_system_sqlite=1
   #-Duse_system_ssl=1
   #-Duse_system_zlib=1
