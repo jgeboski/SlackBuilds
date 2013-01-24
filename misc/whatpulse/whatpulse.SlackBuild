@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Slackware build script for WhatPulse
+# Slackware build script for whatpulse
 
 # Copyright 2010-2012 James Geboski <jgeboski@gmail.com>
 # All rights reserved.
@@ -22,8 +22,8 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-PRGNAM=WhatPulse
-VERSION=${VERSION:-1.2}
+PRGNAM=whatpulse
+VERSION=${VERSION:-2.0.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -43,11 +43,10 @@ PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
 if [ "$ARCH" = "x86_64" ]; then
-  PKG_ARCH="64"
+  PKGARCH="64bit"
 else
-  PKG_ARCH="32"
+  PKGARCH="32bit"
 fi
-
 
 if ! getent group $WHATPULSE_GROUP; then
   printf "You must have and be in the '${WHATPULSE_GROUP}' group to use WhatPulse"
@@ -59,15 +58,32 @@ set -e
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $PRGNAM-$VERSION
+mkdir -p $PRGNAM-$VERSION
+tar xvf $CWD/$PRGNAM-linux-$PKGARCH-$VERSION.tar.gz -C $PRGNAM-$VERSION
+cd $PRGNAM-$VERSION
 
-mkdir -p $PKG/usr/bin
-tar xf $CWD/$PRGNAM-Linux$PKG_ARCH-$VERSION.tar.gz -C $PKG/usr/bin
-chown root:$WHATPULSE_GROUP $PKG/usr/bin/WhatPulse
-chmod 0750 $PKG/usr/bin/WhatPulse
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
 
-mkdir -p $PKG/lib/udev/rules.d
+mkdir -p \
+  $PKG/lib/udev/rules.d \
+  $PKG/usr/bin
+
+install -m 755 $PRGNAM $PKG/usr/bin
+chown root:$WHATPULSE_GROUP $PKG/usr/bin/$PRGNAM
+
 echo "KERNEL==\"event*\", NAME=\"input/%k\", MODE:=\"640\", GROUP:=\"${WHATPULSE_GROUP}\"" \
   > $PKG/lib/udev/rules.d/99-whatpulse-input.rules
+
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a README.txt $PKG/usr/doc/$PRGNAM-$VERSION
+cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc

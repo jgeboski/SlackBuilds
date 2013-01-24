@@ -6,3 +6,7 @@ You'll need to add the group 'input' before installing this package.
 
 You can optionally change the group name from 'input'.
 WHATPULSE_GROUP=groupname ./WhatPulse.SlackBuild
+
+Note: package naming has changed from 'WhatPulse' to 'whatpulse.' If the
+system has the older version of WhatPulse installed, it must be removed
+before installing this version.

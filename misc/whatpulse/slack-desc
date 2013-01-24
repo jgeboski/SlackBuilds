@@ -6,14 +6,14 @@
 # customary to leave one space after the ':' except on otherwise blank lines.
 
          |-----handy-ruler------------------------------------------------------|
-WhatPulse: WhatPulse (Keystrokes and mouse clicks/movement statistics)
-WhatPulse:
-WhatPulse: WhatPulse is an application which monitors the number of keystrokes
-WhatPulse: and mouse clicks/movement. All of a user's keystrokes and mouse
-WhatPulse: statistics are pulsed and compiled into a nice view on whatpulse.org.
-WhatPulse:
-WhatPulse: Homepage: http://whatpulse.org/
-WhatPulse:
-WhatPulse:
-WhatPulse:
-WhatPulse:
+whatpulse: WhatPulse (Keystrokes and mouse clicks/movement statistics)
+whatpulse:
+whatpulse: WhatPulse is an application which monitors the number of keystrokes
+whatpulse: and mouse clicks/movement. All of a user's keystrokes and mouse
+whatpulse: statistics are pulsed and compiled into a nice view on whatpulse.org.
+whatpulse:
+whatpulse: Homepage: http://whatpulse.org/
+whatpulse:
+whatpulse:
+whatpulse:
+whatpulse:
