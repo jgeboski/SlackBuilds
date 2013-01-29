@@ -1,0 +1,6 @@
+libXinerama is part of X11.
+
+This contains the fake xinerama patch which is a replacement
+libXinerama library that instead of querying the XServer reads
+~/.fakexinerama and provides fake information about Xinerama screens
+based on this file.

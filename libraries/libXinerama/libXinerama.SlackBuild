@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Slackware build script for fakexinerama
+# Slackware build script for libXinerama
 
 # Copyright 2012 James Geboski <jgeboski@gmail.com>
 # All rights reserved.
@@ -22,10 +22,10 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-PRGNAM=fakexinerama
-LIBNAM=libXinerama
+PRGNAM=libXinerama
 VERSION=${VERSION:-1.1.2}
 BUILD=${BUILD:-1}
+TAG=${TAG:-_fake}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -59,9 +59,9 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $LIBNAM-$VERSION
-tar xvf $CWD/$LIBNAM-$VERSION.tar.bz2
-cd $LIBNAM-$VERSION
+rm -rf $PRGNAM-$VERSION
+tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2
+cd $PRGNAM-$VERSION
 
 chown -R root:root .
 find . \
@@ -94,4 +94,4 @@ mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 
 cd $PKG
-/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD.${PKGTYPE:-tgz}
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
