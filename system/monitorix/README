@@ -4,8 +4,5 @@ It has been created to be used under production UNIX/Linux servers, but
 due to its simplicity and small size you may also use it on embedded
 devices as well.
 
-You will need to set a user and group for the web files:
-  # WWW_USER=httpd WWW_GROUP=httpd ./monitorix.SlackBuild
-
 DOCROOT can be set to override the default web directory of:
   # DOCROOT=/var/www/htdocs/monitorix ./monitorix.SlackBuild
