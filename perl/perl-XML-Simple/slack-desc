@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+               |-----handy-ruler------------------------------------------------------|
+perl-XML-Simple: perl-XML-Simple (simple XML parser)
+perl-XML-Simple:
+perl-XML-Simple: XML::Simple is a Perl module that was originally developed as a tool
+perl-XML-Simple: for reading and writing configuration data in XML format. You can use
+perl-XML-Simple: it for many other purposes that involve storing and retrieving
+perl-XML-Simple: structured data in XML.
+perl-XML-Simple:
+perl-XML-Simple: Homepage: http://search.cpan.org/dist/XML-Simple/
+perl-XML-Simple:
+perl-XML-Simple:
+perl-XML-Simple:

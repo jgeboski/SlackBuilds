@@ -1,0 +1,6 @@
+XML::Simple is a Perl module that was originally developed as a tool
+for reading and writing configuration data in XML format. You can use
+it for many other purposes that involve storing and retrieving
+structured data in XML.
+
+
