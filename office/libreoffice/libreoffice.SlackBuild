@@ -24,7 +24,7 @@
 
 PRGNAM=libreoffice
 SRCNAM=libreoffice-core
-VERSION=${VERSION:-3.6.4.3}
+VERSION=${VERSION:-3.6.5.2}
 BUILD=${BUILD:-1}
 
 if [ -z "$ARCH" ]; then
