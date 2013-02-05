@@ -19,5 +19,7 @@ preserve_perms() {
   config $NEW
 }
 
+config etc/logrotate.d/monitorix.new
 config etc/monitorix.conf.new
+
 preserve_perms etc/rc.d/rc.monitorix.new

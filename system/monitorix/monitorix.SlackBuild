@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=monitorix
-VERSION=${VERSION:-2.6.0}
+VERSION=${VERSION:-3.0.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 ARCH="noarch"
@@ -59,27 +59,6 @@ cd $TMP
 rm -rf $PRGNAM-$VERSION
 tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
 cd $PRGNAM-$VERSION
-
-mkdir -p \
-  $PKG/etc/rc.d \
-  $PKG/usr/bin \
-  $PKG/usr/man/{man5,man8} \
-  $PKG/var/lib/monitorix \
-  $PKG/$DOCROOT/monitorix-cgi
-
-install -m 644 man/man5/monitorix.conf.5 $PKG/usr/man/man5
-install -m 644 man/man8/monitorix.8      $PKG/usr/man/man8
-
-install -m 644 monitorix.cgi  $PKG/$DOCROOT/monitorix-cgi
-install -m 644 monitorix.conf $PKG/etc/monitorix.conf.new
-install -m 755 monitorix      $PKG/usr/bin
-
-install -m 644 $CWD/rc.monitorix $PKG/etc/rc.d/rc.monitorix.new
-
-install -m 644 \
-  logo_bot.png logo_top.png monitorixico.png \
- $PKG/$DOCROOT
-
 chown -R root:root $PKG
 find $PKG \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
@@ -87,18 +66,46 @@ find $PKG \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+mkdir -p \
+  $PKG/etc/{logrotate,rc}.d \
+  $PKG/usr/bin \
+  $PKG/usr/man/{man5,man8} \
+  $PKG/usr/share/$PRGNAM/modules \
+  $PKG/var/lib/monitorix \
+  $PKG/$DOCROOT
+
+install -m 755 monitorix                 $PKG/usr/bin
+install -m 644 lib/*                     $PKG/usr/share/$PRGNAM/modules
+install -m 644 monitorix.cgi             $PKG/$DOCROOT/$PRGNAM.cgi
+install -m 644 *.png                     $PKG/$DOCROOT
+
+install -m 644 monitorix.conf            $PKG/etc/monitorix.conf.new
+install -m 644 docs/monitorix.logrotate  $PKG/etc/logrotate.d/$PRGNAM.new
+install -m 644 docs/monitorix.init       $PKG/etc/rc.d/rc.$PRGNAM.new
+
+install -m 644 man/man5/monitorix.conf.5 $PKG/usr/man/man5
+install -m 644 man/man8/monitorix.8      $PKG/usr/man/man8
+
 chown -R $WWW_USER:$WWW_GROUP $PKG/$DOCROOT
 
-sed -i "s,/usr/share/monitorix/,$DOCROOT/," $PKG/etc/monitorix.conf.new
-sed -i "s,\"/monitorix\",\"\"," $PKG/etc/monitorix.conf.new
+sed -i \
+  -e "s,\(base_dir =\).*,\1 $DOCROOT/," \
+  -e "s,\(base_cgi =\).*,\1 /$PRGNAM.cgi," \
+ $PKG/etc/monitorix.conf.new
+
+sed -i \
+  -e "s,\(use lib\).*,\1 \"/usr/share/$PRGNAM/modules\";," \
+ $PKG/usr/bin/monitorix \
+ $PKG/$DOCROOT/$PRGNAM.cgi
 
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  Changes COPYING README README.nginx \
-  $PKG/usr/doc/$PRGNAM-$VERSION
+  Changes COPYING README README.nginx docs/monitorix-alert.sh \
+  docs/monitorix-{apache,lighttpd}.conf \
+ $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
