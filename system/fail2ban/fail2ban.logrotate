@@ -1,0 +1,12 @@
+/var/log/fail2ban.log {
+  monthly
+  rotate 5
+  missingok
+  compress
+  sharedscripts
+  postrotate
+    if [ -x /etc/rc.d/rc.fail2ban -a -f /var/run/fail2ban/fail2ban.pid ]; then
+      /etc/rc.d/rc.fail2ban restart
+    fi
+  endscript
+}
