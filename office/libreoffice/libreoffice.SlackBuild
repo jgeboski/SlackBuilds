@@ -23,8 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=libreoffice
-SRCNAM=libreoffice-core
-VERSION=${VERSION:-3.6.5.2}
+VERSION=${VERSION:-4.0.0.3}
 BUILD=${BUILD:-1}
 
 if [ -z "$ARCH" ]; then
@@ -59,9 +58,9 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $SRCNAM-$VERSION
-tar xvf $CWD/$SRCNAM-$VERSION.tar.xz
-cd $SRCNAM-$VERSION
+rm -rf $PRGNAM-$VERSION
+tar xvf $CWD/$PRGNAM-$VERSION.tar.xz
+cd $PRGNAM-$VERSION
 chown -R root:root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
@@ -81,24 +80,21 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-ccache \
   --disable-gconf \
   --disable-gtk3 \
-  --disable-kdeab \
-  --disable-ldap \
   --disable-lockdown \
-  --disable-mozilla \
   --disable-rpath \
   --disable-zenity \
-  --enable-binfilter \
-  --enable-dbus \
+  --enable-ext-google-docs \
+  --enable-ext-languagetool \
+  --enable-ext-wiki-publisher \
   --enable-gio \
   --enable-mergelibs \
-  --enable-python=system \
+  --enable-python=internal \
   --enable-release-build \
-  --with-help \
-  --with-lang="$LANGS" \
   --with-external-dict-dir=/usr/share/hunspell \
-  --with-external-tar="$TMP/external-$VERSION" \
-  --with-num-cpus=${NUMCPUS:-2} \
-  --with-max-jobs=${NUMJOBS:-4} \
+  --with-external-tar=$TMP/$PRGNAM-external \
+  --with-lang="$LANGS" \
+  --with-package-format=inst \
+  --with-parallelism=${PARALLEL:-yes} \
   --with-system-boost \
   --with-system-cairo \
   --with-system-curl \
@@ -113,44 +109,40 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-system-libwpd \
   --with-system-libxml \
   --with-system-mesa-headers \
-  --with-system-mozilla=seamonkey \
-  --with-system-mozilla-headers \
   --with-system-neon \
+  --with-system-npapi-headers \
   --with-system-nss \
-  --with-system-odbc \
+  --with-system-openldap \
   --with-system-openssl \
+  --with-system-poppler \
   --with-system-redland \
-  --with-unix-wrapper=libreoffice \
   --with-system-xextensions-headers \
   --with-system-zlib \
+  --with-unix-wrapper=$PRGNAM \
   --with-x \
+  --without-afms \
   --without-fonts \
   --without-gssapi \
+  --without-helppack-integration \
   --without-java \
-  --without-krb5
-  # --with-system-dicts
-  # --without-myspell-dicts
-  # --with-system-clucene
-  # --with-system-poppler
+  --without-krb5 \
+  --without-myspell-dicts \
+  --without-ppds
 
-if [ ! -e $TMP/external-$VERSION ]; then
-  make fetch
-fi
+  #--enable-python=system
+  #--with-helppack-integration
+  #--with-system-clucene
+  #--with-system-odbc
 
+make fetch
 make build
 make distro-pack-install DESTDIR=$PKG
 
 rm -f $PKG/usr/share/applications/*.desktop
 
-for app in base calc draw impress math startcenter writer ; do
-  sed -i \
-    "s/$PRGNAM\(\s-\)/loffice\1/g" \
-   $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/share/xdg/$app.desktop
-
-  install -m 644 \
-    $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/share/xdg/$app.desktop \
-   $PKG/usr/share/applications/$PRGNAM-$app.desktop
-done
+install -m 644 \
+  $PKG/usr/lib${LIBDIRSUFFIX}/$PRGNAM/share/xdg/*.desktop \
+ $PKG/usr/share/applications
 
 mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/mozilla/plugins
 
