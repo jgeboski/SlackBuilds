@@ -1,0 +1,13 @@
+diff -ur a/usr/bin/steam b/usr/bin/steam
+--- a/usr/bin/steam	2013-02-15 15:56:14.340105004 -0500
++++ b/usr/bin/steam	2013-02-15 15:56:44.869359093 -0500
+@@ -3,6 +3,9 @@
+ # This is the Steam script that typically resides in /usr/bin
+ # It will create the Steam bootstrap if necessary and then launch steam.
+ 
++# Set SDL audio driver to ALSA by default
++export SDL_AUDIODRIVER=${SDL_AUDIODRIVER:-alsa}
++
+ # Get the full name of this script
+ export STEAMSCRIPT="$(cd "${0%/*}" && echo "$PWD")/${0##*/}"
+ 
