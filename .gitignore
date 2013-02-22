@@ -1,10 +1,6 @@
 *.deb
 *.jar
-*.tar.gz
-*.tar.bz2
-*.tar.bz2
-*.tar.xz
-*.tgz
-*.txz
+*.t?z
+*.tar.?z*
 *.war
 *.zip
