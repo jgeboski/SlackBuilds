@@ -1,0 +1,2 @@
+ioping is a tool for monitoring IO latency in real-time. It operates
+in the same manner that the network ping utility does for disk IO.
