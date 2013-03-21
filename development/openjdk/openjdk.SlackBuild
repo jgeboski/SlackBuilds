@@ -30,12 +30,19 @@ NUMJOBS=${NUMJOBS:-8}
 PKGNAM=icedtea
 PKGVER=${ICEDTEA_VERSION:-2.3.8}
 
+SYSARCH=$(uname -m)
+
 if [ -z "$ARCH" ]; then
-  case "$( uname -m )" in
+  case "$SYSARCH" in
     i?86) ARCH=i486 ;;
     arm*) ARCH=arm ;;
        *) ARCH=$( uname -m ) ;;
   esac
+fi
+
+if [ "$ARCH" = "i486" -a "$SYSARCH" = "x86_64" ]; then
+  . /etc/profile.d/32dev.sh
+  export ALT_COMPILER_PATH="/usr/bin/32"
 fi
 
 CWD=$(pwd)
@@ -104,8 +111,7 @@ make \
   JAXWS_SRC_ZIP=$SOURCES/jaxws.tar.gz \
   JDK_SRC_ZIP=$SOURCES/jdk.tar.gz \
   LANGTOOLS_SRC_ZIP=$SOURCES/langtools.tar.gz \
-  OPENJDK_SRC_ZIP=$SOURCES/openjdk.tar.gz \
-  #ALT_COMPILER_PATH="/usr/bin/32"
+  OPENJDK_SRC_ZIP=$SOURCES/openjdk.tar.gz
 
 cp -a openjdk.build/j2sdk-image          $PKG/usr/lib${LIBDIRSUFFIX}/java
 cp -a openjdk.build/j2sdk-image/man/man1 $PKG/usr/man
@@ -131,6 +137,13 @@ cd certs
 
   install -m 644 cacerts $PKG/usr/lib${LIBDIRSUFFIX}/java/jre/lib/security
 cd -
+
+if [ "$ARCH" != "$SYSARCH" ]; then
+  # Force NSS library path for cross-compilation
+  sed -i \
+    "s,\(nssLibraryDirectory =\).*,\1 /usr/lib${LIBDIRSUFFIX}," \
+   $PKG/usr/lib/java/jre/lib/security/nss.cfg
+fi
 
 sed -i "s,/usr/bin/,,"      $PKG/usr/share/applications/*.desktop
 sed -i "s/javaws.png/java/" $PKG/usr/share/applications/javaws.desktop
