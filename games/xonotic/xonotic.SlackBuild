@@ -73,30 +73,26 @@ find . \
 
 mkdir -p \
   $PKG/usr/bin \
-  $PKG/usr/share/xonotic/data \
+  $PKG/usr/share/xonotic \
   $PKG/usr/share/{applications,pixmaps}
 
-cd source/fteqcc
-  make CFLAGS="-Wall $SLKCFLAGS"
-  FTEQCC=$(pwd)/fteqcc.bin
-cd -
+make -C source/fteqcc \
+  CFLAGS="$SLKCFLAGS"
 
-cd source/qcsrc
-  make FTEQCCFLAGS_WATERMARK="" FTEQCC="$FTEQCC"
-cd -
+make -C source/qcsrc \
+  FTEQCC="$(pwd)/source/fteqcc/fteqcc.bin" \
+  FTEQCCFLAGS_WATERMARK=""
 
-cd source/darkplaces
-  make release \
-    CFLAGS_EXTRA="$SLKCFLAGS" \
-    DP_FS_BASEDIR="/usr/share/xonotic"
-  install -m 755 darkplaces-sdl $PKG/usr/bin/xonotic-glx
-  install -m 755 darkplaces-glx $PKG/usr/bin/xonotic-sdl
-cd -
+make -C source/darkplaces release \
+  CFLAGS_EXTRA="$SLKCFLAGS" \
+  DP_FS_BASEDIR="/usr/share/xonotic"
 
-cp data/* $PKG/usr/share/xonotic/data
+install -m 755 source/darkplaces/darkplaces-sdl $PKG/usr/bin/xonotic-glx
+install -m 755 source/darkplaces/darkplaces-glx $PKG/usr/bin/xonotic-sdl
+install -m 644 $CWD/xonotic.desktop             $PKG/usr/share/applications
+install -m 644 misc/logos/xonotic_icon.svg      $PKG/usr/share/pixmaps/xonotic.svg
 
-install -m 644 $CWD/xonotic.desktop        $PKG/usr/share/applications
-install -m 644 misc/logos/xonotic_icon.svg $PKG/usr/share/pixmaps/xonotic.svg
+cp -a data $PKG/usr/share/xonotic
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
