@@ -1,4 +1,5 @@
 *.deb
+*.c
 *.jar
 *.t?z
 *.tar.?z*
