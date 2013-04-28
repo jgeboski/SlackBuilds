@@ -70,18 +70,48 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-./configure \
-  --prefix=/usr \
-  --libdir=/usr/lib${LIBDIRSUFFIX} \
-  --mandir=/usr/man \
-  --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --build=$ARCH-slackware-linux
+if [ "$ARCH" = "x86_64" ]; then
+  BUILD64_OPTS="--with-wine64=../build64"
 
-make depend
-make
-make install DESTDIR=$PKG
+  ( mkdir build64
+    cd build64
+
+    CFLAGS="$SLKCFLAGS" \
+    CXXFLAGS="$SLKCFLAGS" \
+    ../configure \
+      --prefix=/usr \
+      --libdir=/usr/lib${LIBDIRSUFFIX} \
+      --mandir=/usr/man \
+      --docdir=/usr/doc/$PRGNAM-$VERSION \
+      --build=$ARCH-slackware-linux \
+      --enable-win64
+
+    make depend
+    make
+  )
+fi
+
+( mkdir build32
+  cd build32
+
+  CFLAGS="$SLKCFLAGS" \
+  CXXFLAGS="$SLKCFLAGS" \
+  ../configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --mandir=/usr/man \
+    --docdir=/usr/doc/$PRGNAM-$VERSION \
+    --build=$ARCH-slackware-linux \
+    $BUILD64_OPTS
+
+  make depend
+  make
+  make install DESTDIR=$PKG
+)
+
+if [ "$ARCH" = "x86_64" ]; then
+  make -C build64 install DESTDIR=$PKG
+fi
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
