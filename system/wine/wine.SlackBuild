@@ -69,20 +69,14 @@ find . \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
- 
-if [ "$OPENGL" = "no" ]; then
-    do_opengl="without"
-  else
-    do_opengl="with"
-fi
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
   --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --${do_opengl}-opengl \
   --build=$ARCH-slackware-linux
 
 make depend
