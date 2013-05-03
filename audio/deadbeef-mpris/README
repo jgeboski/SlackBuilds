@@ -1,3 +1,0 @@
-Media Player Remote Interfacing Specification, or MPRIS is a D-Bus
-interface for controlling media players.  This plugin aims to extend
-the DeaDBeeF music player with MPRIS support.
