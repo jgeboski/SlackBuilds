@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Spoutcraft
-Comment=Spoutcraft
-Categories=Application;Game;
-Exec=spoutcraft
-Icon=spoutcraft
-Terminal=false
-StartupNotify=false
