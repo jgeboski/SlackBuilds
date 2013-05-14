@@ -25,7 +25,7 @@
 PRGNAM=steam
 VERSION=${VERSION:-latest}
 BUILD=${BUILD:-2}
-TAG=${TAG:-_SBo}
+TAG=${TAG:-_jgeboski}
 ARCH="i486"
 
 if [ -z "$ARCH" ]; then
@@ -37,7 +37,7 @@ if [ -z "$ARCH" ]; then
 fi
 
 CWD=$(pwd)
-TMP=${TMP:-/tmp/SBo}
+TMP=${TMP:-/tmp/jgeboski}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 

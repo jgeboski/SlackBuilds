@@ -25,6 +25,7 @@
 PRGNAM=icedtea-web
 VERSION=${VERSION:-1.4}
 BUILD=${BUILD:-1}
+TAG=${TAG:-_jgeboski}
 
 MOZILLA_PLUGIN=${MOZILLA_PLUGIN:-seamonkey-plugin}
 
@@ -37,7 +38,7 @@ if [ -z "$ARCH" ]; then
 fi
 
 CWD=$(pwd)
-TMP=${TMP:-/tmp/openjdk-build}
+TMP=${TMP:-/tmp/jgeboski}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
@@ -110,4 +111,4 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh  > $PKG/install/doinst.sh
 
 cd $PKG
-/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD.${PKGTYPE:-tgz}
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}

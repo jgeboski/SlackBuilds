@@ -25,12 +25,12 @@
 PRGNAM=minecraft
 VERSION=${VERSION:-1.4.4}
 BUILD=${BUILD:-1}
-TAG=${TAG:-_SBo}
+TAG=${TAG:-_jgeboski}
 
 MEMORY=${MEMORY:-1G}
 
 CWD=$(pwd)
-TMP=${TMP:-/tmp/SBo}
+TMP=${TMP:-/tmp/jgeboski}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 ARCH=noarch

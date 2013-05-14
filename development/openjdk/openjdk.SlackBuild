@@ -25,6 +25,7 @@
 PRGNAM=openjdk
 VERSION=${VERSION:-7u21_b02}
 BUILD=${BUILD:-1}
+TAG=${TAG:-_jgeboski}
 NUMJOBS=${NUMJOBS:-8}
 
 PKGNAM=icedtea
@@ -46,7 +47,7 @@ if [ "$ARCH" = "i486" -a "$SYSARCH" = "x86_64" ]; then
 fi
 
 CWD=$(pwd)
-TMP=${TMP:-/tmp/$PRGNAM-build}
+TMP=${TMP:-/tmp/jgeboski}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
@@ -190,4 +191,4 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh  > $PKG/install/doinst.sh
 
 cd $PKG
-/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD.${PKGTYPE:-tgz}
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}

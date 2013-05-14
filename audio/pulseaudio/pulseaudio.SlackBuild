@@ -25,7 +25,7 @@
 PRGNAM=pulseaudio
 VERSION=${VERSION:-2.99.2}
 BUILD=${BUILD:-2}
-TAG=${TAG:-_SBo}
+TAG=${TAG:-_jgeboski}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
 fi
 
 CWD=$(pwd)
-TMP=${TMP:-/tmp/SBo}
+TMP=${TMP:-/tmp/jgeboski}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
