@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+       |-----handy-ruler------------------------------------------------------|
+spotify: spotify (audio streaming service)
+spotify:
+spotify: Spotify is a remote streaming service that enables the end user to
+spotify: access endless amounts of music. It operates much like an online
+spotify: radio conforming to the end user.
+spotify:
+spotify: Homepage: https://www.spotify.com/
+spotify:
+spotify:
+spotify:
+spotify:
