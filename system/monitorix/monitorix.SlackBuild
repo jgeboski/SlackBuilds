@@ -23,12 +23,12 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=monitorix
-VERSION=${VERSION:-3.0.0}
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-3.2.0}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_jgeboski}
 ARCH="noarch"
 
-DOCROOT=${DOCROOT:-/var/www/htdocs/monitorix}
+DOCROOT=${DOCROOT:-/usr/share/monitorix/www}
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/jgeboski}
@@ -56,11 +56,11 @@ mkdir -p \
   $PKG/usr/man/{man5,man8} \
   $PKG/usr/share/$PRGNAM/modules \
   $PKG/var/lib/monitorix \
-  $PKG/$DOCROOT/{cgi-bin,imgs}
+  $PKG/$DOCROOT/{cgi,imgs}
 
 install -m 755 monitorix                 $PKG/usr/bin
 install -m 644 lib/*                     $PKG/usr/share/$PRGNAM/modules
-install -m 644 monitorix.cgi             $PKG/$DOCROOT/cgi-bin
+install -m 644 monitorix.cgi             $PKG/$DOCROOT/cgi
 install -m 644 *.png                     $PKG/$DOCROOT
 
 install -m 644 monitorix.conf            $PKG/etc/monitorix.conf.new
@@ -73,14 +73,14 @@ install -m 644 man/man8/monitorix.8      $PKG/usr/man/man8
 chmod 777 $PKG/$DOCROOT/imgs
 
 sed -i \
-  -e "s,\(base_dir =\).*,\1 $DOCROOT/," \
-  -e "s,\(base_cgi =\).*,\1 /cgi-bin," \
+  -e "s;\(base_dir =\).*;\1 $DOCROOT/;" \
+  -e "s;\(base_cgi =\).*;\1 /cgi;" \
  $PKG/etc/monitorix.conf.new
 
 sed -i \
-  -e "s,\(use lib\).*,\1 \"/usr/share/$PRGNAM/modules\";," \
+  -e "s;\(use lib\).*;\1 \"/usr/share/$PRGNAM/modules\"\;;" \
  $PKG/usr/bin/monitorix \
- $PKG/$DOCROOT/cgi-bin/monitorix.cgi
+ $PKG/$DOCROOT/cgi/monitorix.cgi
 
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
