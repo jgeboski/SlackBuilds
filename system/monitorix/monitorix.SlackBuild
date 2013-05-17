@@ -53,26 +53,29 @@ find $PKG \
 patch -p1 < $CWD/patches/added-optional-host-address.patch
 
 mkdir -p \
-  $PKG/etc/{logrotate,rc}.d \
+  $PKG/etc/{logrotate.d,rc.d,sysconfig} \
   $PKG/usr/bin \
   $PKG/usr/man/{man5,man8} \
   $PKG/usr/share/$PRGNAM/modules \
   $PKG/var/lib/monitorix \
-  $PKG/$DOCROOT/{cgi,imgs}
+  $PKG/$DOCROOT/{cgi,imgs,reports}
 
 install -m 755 monitorix                 $PKG/usr/bin
-install -m 644 lib/*                     $PKG/usr/share/$PRGNAM/modules
+install -m 644 lib/*.pm                  $PKG/usr/share/$PRGNAM/modules
 install -m 644 monitorix.cgi             $PKG/$DOCROOT/cgi
+install -m 644 reports/*.html            $PKG/$DOCROOT/reports
 install -m 644 *.png                     $PKG/$DOCROOT
 
 install -m 644 monitorix.conf            $PKG/etc/monitorix.conf.new
-install -m 644 docs/monitorix.logrotate  $PKG/etc/logrotate.d/$PRGNAM.new
 install -m 644 docs/monitorix.init       $PKG/etc/rc.d/rc.$PRGNAM.new
+install -m 644 docs/monitorix.logrotate  $PKG/etc/logrotate.d/$PRGNAM.new
+install -m 644 docs/monitorix.sysconfig  $PKG/etc/sysconfig/$PRGNAM.new
 
 install -m 644 man/man5/monitorix.conf.5 $PKG/usr/man/man5
 install -m 644 man/man8/monitorix.8      $PKG/usr/man/man8
 
-chmod 777 $PKG/$DOCROOT/imgs
+echo "/etc/monitorix.conf" > $PKG/$DOCROOT/cgi/monitorix.conf.path
+chmod 666 $PKG/$DOCROOT/imgs
 
 sed -i \
   -e "s;\(base_dir =\).*;\1 $DOCROOT/;" \
