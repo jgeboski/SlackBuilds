@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=Ice
-VERSION=${VERSION:-3.4.2}
+VERSION=${VERSION:-3.5.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_jgeboski}
 
@@ -69,59 +69,48 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-# Simple include fixes for GCC 4.7
-patch -p1 < $CWD/patches/gcc47.patch
-
-# A patch for PHP 5.4. Patch provided by mes (ZeroC Staff).
-# http://www.zeroc.com/forums/patches/5603-ice-php-php-5-4-patch.html#post24426
-patch -p1 < $CWD/patches/php54.patch
-
 SUBS[0]="cpp"
 LIBDIR=$PKG/usr/lib${LIBDIRSUFFIX}
 
-#if pkg-config --exists mono; then
-#  SUBS[1]="cs"
-#fi
-
-# Comiple time errors
-#if which javac &>/dev/null; then
-#  SUBS[2]="java"
-#fi
+if pkg-config --exists mono; then
+  SUBS[1]="cs"
+fi
 
 if which php &>/dev/null; then
   SUBS[3]="php"
-  PHP_DIR=$LIBDIR/php
+  PHPDIR=$LIBDIR/php
 fi
 
 if pkg-config --exists python2; then
   SUBS[4]="py"
-  PY_VER=$(python --version 2>&1 | cut -d ' ' -f 2 | cut -d '.' -f 1-2)
-  PY_DIR=$LIBDIR/python$PY_VER/site-packages/$PRGNAM
+  PYVER=$(python --version 2>&1 | cut -d ' ' -f 2 | cut -d '.' -f 1-2)
+  PYDIR=$LIBDIR/python$PYVER/site-packages/$PRGNAM
 fi
 
 if which ruby &>/dev/null; then
-  RB_VER=$(find /usr/lib${LIBDIRSUFFIX}/ruby -type d -maxdepth 1 -name '*.*.*' -printf %f)
+  RBVER=$(find /usr/lib${LIBDIRSUFFIX}/ruby -type d -maxdepth 1 -name '*.*.*' -printf %f)
 
   if [ -n "$RB_VER" ]; then
     SUBS[5]="rb"
-    RB_DIR=$LIBDIR/ruby/$RB_VER
+    RBDIR=$LIBDIR/ruby/$RBVER
   fi
 fi
 
 mkdir -p \
+  $PKG/usr/doc/$PRGNAM-$VERSION \
   $PKG/usr/share/Ice/slice \
-  $PHP_DIR/extensions \
-  $PY_DIR \
-  $RB_DIR
+  $PHPDIR/extensions \
+  $PYDIR \
+  $RBDIR
 
 for sub in ${SUBS[@]}; do
   case $sub in
     php)
-      libdir=$PHP_DIR/extensions ;;
+      libdir=$PHPDIR/extensions ;;
     py)
-      libdir=$PY_DIR ;;
+      libdir=$PYDIR ;;
     rb)
-      libdir=$RB_DIR ;;
+      libdir=$RBDIR ;;
     *)
       libdir=$LIBDIR ;;
   esac
@@ -139,27 +128,27 @@ for sub in ${SUBS[@]}; do
     install_configdir=$PKG/etc \
     install_includedir=$PKG/usr/include/Ice \
     install_libdir=$libdir \
-    install_phpdir=$PHP_DIR \
+    install_phpdir=$PHPDIR \
     install_pkgconfigdir=$LIBDIR/pkgconfig \
-    install_pythondir=$PY_DIR \
-    install_rubydir=$RB_DIR \
+    install_pythondir=$PYDIR \
+    install_rubydir=$RBDIR \
     install_slicedir=$PKG/usr/share/Ice/slice
 done
 
+mv $PKG/etc/* $PKG/usr/doc/$PRGNAM-$VERSION
 mv $PKG/usr/lib/ImportKey.class $PKG/usr/share/Ice
 cp -a slice $PKG/usr/share/Ice
+rm -rf $PKG/etc $PKG/usr/*LICENSE
 
-rm -rf \
-  $PKG/etc \
-  $PKG/usr/lib \
-  $PKG/usr/*LICENSE \
+if [ "$ARCH" = "x86_64" ]; then
+  rm -rf $PKG/usr/lib
+fi
 
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
-mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  CHANGES ICE_LICENSE LICENSE README RELEASE_NOTES \
+  CHANGES *LICENSE README RELEASE_NOTES \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
