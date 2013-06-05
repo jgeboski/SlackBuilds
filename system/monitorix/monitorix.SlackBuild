@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=monitorix
-VERSION=${VERSION:-3.2.0}
+VERSION=${VERSION:-3.2.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_jgeboski}
 ARCH="noarch"
@@ -49,8 +49,6 @@ find $PKG \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
-
-patch -p1 < $CWD/patches/added-optional-host-address.patch
 
 mkdir -p \
   $PKG/etc/{logrotate.d,rc.d,sysconfig} \
