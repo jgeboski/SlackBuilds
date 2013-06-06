@@ -13,7 +13,8 @@
 # and PAM, allowing the script to be cleaner and more elegant (no need for a
 # a patch to disable PAM).
 #
-# Copyright 2010  Yucatan "Kenjiro" Costa, Alegrete, RS, Brasil
+# Copyright 2010 Yucatan "Kenjiro" Costa, Alegrete, RS, Brasil
+# Copyright 2012-2013 James Geboski <jgeboski@gmail.com>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -34,7 +35,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=chromium
-VERSION=${VERSION:-28.0.1458.1}
+VERSION=${VERSION:-29.0.1524.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_jgeboski}
 
@@ -81,9 +82,6 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-# Disable PulseAudio requirement
-sed -i "s/\('use_pulseaudio%':\) 1/\1 0/" media/media.gyp
-
 # A hack around to make sure `chrome` returns 0 when the main chrome
 # process has been notified.
 sed -i \
@@ -91,20 +89,23 @@ sed -i \
  chrome/browser/chrome_browser_main.cc
 
 build/gyp_chromium --depth=. \
+  -Dchromeos=0 \
+  -Dfastbuild=1 \
+  -Dffmpeg_branding=Chrome \
   -Dgcc_version=47 \
+  -Dno_strict_aliasing=1 \
+  -Dproprietary_codecs=1 \
   -Dpython_ver=2.7 \
   -Dremoting=0 \
-  -Dchromeos=0 \
-  -Dwerror=0 \
-  -Dfastbuild=1 \
   -Dremove_webcore_debug_symbols=1 \
-  -Dno_strict_aliasing=1 \
   -Dwerror= \
+  -Dlibspeechd_h_prefix=speech-dispatcher/ \
+  -Dlinux_link_libspeechd=1 \
   -Dlinux_sandbox_path=/usr/lib${LIBDIRSUFFIX}/chromium/chrome_sandbox \
   -Dlinux_strip_binary=1 \
   -Dlinux_strip_reliability_tests=1 \
-  -Dlinux_link_libspeechd=1 \
-  -Dproprietary_codecs=1 \
+  -Dlinux_use_gold_flags=0 \
+  -Dlinux_use_gold_binary=0 \
   -Ddisable_nacl=1 \
   -Denable_google_now=0 \
   -Duse_gconf=0 \
@@ -112,49 +113,33 @@ build/gyp_chromium --depth=. \
   -Duse_kerberos=0 \
   -Duse_openssl=0 \
   -Duse_pulseaudio=0 \
-  -Duse_system_bzip2=1 \
   -Duse_system_expat=1 \
   -Duse_system_ffmpeg=0 \
-  -Duse_system_flac=1 \
   -Duse_system_icu=1 \
-  -Duse_system_libevent=1 \
   -Duse_system_libexif=1 \
   -Duse_system_libjpeg=1 \
   -Duse_system_libmtp=1 \
-  -Duse_system_libpng=0 \
-  -Duse_system_libusb=1 \
   -Duse_system_libxml=1 \
   -Duse_system_mesa=0 \
   -Duse_system_nspr=0 \
   -Duse_system_protobuf=1 \
-  -Duse_system_speex=1 \
   -Duse_system_sqlite=0 \
   -Duse_system_ssl=0 \
   -Duse_system_xdg_utils=1 \
-  -Duse_system_yasm=1 \
-  -Duse_system_zlib=0 \
-  -Dffmpeg_branding=Chrome \
-  -Dlinux_use_gold_flags=0 \
-  -Dlinux_use_gold_binary=0
-
-  ## Various build errors
-  # -Ddisable_nacl=0
-
-  ## Causes renderers to hang
-  #-Duse_system_libpng=1
+  -Duse_system_yasm=1
 
   ## Causes segfault on startup
-  # -Duse_system_nspr=1
+  #-Duse_system_nspr=1
 
-  ## Symbol issues
+  ## Various build errors
+  #-Ddisable_nacl=0
   #-Duse_system_mesa=1
   #-Duse_system_sqlite=1
   #-Duse_system_ssl=1
-  #-Duse_system_zlib=1
 
 CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS -fno-ipa-cp" \
-make chrome chrome_sandbox BUILDTYPE=Release
+CXXFLAGS="$SLKCFLAGS" \
+ninja -C out/Release chrome chrome_sandbox
 
 mkdir -p \
   $PKG/usr/bin \
@@ -162,7 +147,7 @@ mkdir -p \
   $PKG/usr/man/man1 \
   $PKG/usr/share/{applications,pixmaps}
 
-cd out/Release/
+cd out/Release
   install -m 755 \
     chrome libffmpegsumo.so \
    $PKG/usr/lib${LIBDIRSUFFIX}/chromium
