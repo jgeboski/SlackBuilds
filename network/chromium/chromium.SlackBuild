@@ -88,6 +88,11 @@ sed -i \
   "s/chrome::RESULT_CODE_NORMAL_EXIT_PROCESS_NOTIFIED/content::RESULT_CODE_NORMAL_EXIT/" \
  chrome/browser/chrome_browser_main.cc
 
+# Disable startup notification about missing Google API keys
+sed -i \
+  "s/google_apis::HasKeysConfigured()/true/" \
+ chrome/browser/ui/startup/google_api_keys_infobar_delegate.cc
+
 build/gyp_chromium --depth=. \
   -Dchromeos=0 \
   -Dfastbuild=1 \
