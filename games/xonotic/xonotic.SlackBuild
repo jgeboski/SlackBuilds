@@ -92,7 +92,7 @@ cd -
 
 # Rather than using libdl, link libd0_blind_id and libd0_rijndael
 make -C source/darkplaces release \
-  CFLAGS_EXTRA="$SLKCFLAGS" \
+  CFLAGS_EXTRA="$SLKCFLAGS -DSUPPORTIPV6" \
   DP_FS_BASEDIR="/usr/share/$PRGNAM" \
   CFLAGS_CRYPTO="-I$PKG/usr/include -DCRYPTO_STATIC" \
   LIB_CRYPTO="-L$PKG/usr/lib${LIBDIRSUFFIX} -ld0_blind_id" \
