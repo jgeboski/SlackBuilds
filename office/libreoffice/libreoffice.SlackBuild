@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=libreoffice
-VERSION=${VERSION:-4.0.3.3}
+VERSION=${VERSION:-4.0.4.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_jgeboski}
 
@@ -111,7 +111,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-system-libxml \
   --with-system-mesa-headers \
   --with-system-neon \
-  --with-system-npapi-headers \
   --with-system-nss \
   --with-system-openldap \
   --with-system-openssl \
@@ -133,6 +132,7 @@ CXXFLAGS="$SLKCFLAGS" \
   #--enable-python=system
   #--with-helppack-integration
   #--with-system-clucene
+  #--with-system-npapi-headers
   #--with-system-odbc
 
 make fetch
