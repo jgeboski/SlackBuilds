@@ -1,0 +1,106 @@
+#!/bin/sh
+
+# Slackware build script for apache-openmeetings
+
+# Copyright 2013 James Geboski <jgeboski@gmail.com>
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+PRGNAM=apache-openmeetings
+VERSION=${VERSION:-2.1.0}
+BUILD=${BUILD:-1}
+TAG=${TAG:-_jgeboski}
+ARCH=noarch
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp/jgeboski}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+OMUSER=${OMUSER:-openmeetings}
+OMGROUP=${OMGROUP:-openmeetings}
+
+if ! getent group $OMUSER || ! getent passwd $OMGROUP; then
+  echo ""
+  echo "User/group is required for $PRGNAM:"
+  echo "  # groupadd -g 270 $OMGROUP"
+  echo "  # useradd -r -g 270 -u 270 -s /bin/bash -d /opt/$PRGNAM $OMUSER"
+  echo ""
+  exit 1
+fi
+
+set -e
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $PRGNAM-$VERSION
+mkdir -p $PRGNAM-$VERSION
+cd $PRGNAM-$VERSION
+tar xvf $CWD/apache-openmeetings-$VERSION.tar.gz
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+
+mkdir -p \
+  $PKG/etc/rc.d \
+  $PKG/opt/$PRGNAM/{conf,lib,plugins}
+
+cp -a webapps $PKG/opt/$PRGNAM
+
+install -m 644 *.jar         $PKG/opt/$PRGNAM
+install -m 755 *.sh          $PKG/opt/$PRGNAM
+install -m 644 conf/*        $PKG/opt/$PRGNAM/conf
+install -m 644 lib/*.jar     $PKG/opt/$PRGNAM/lib
+install -m 644 plugins/*.jar $PKG/opt/$PRGNAM/plugins
+
+sed \
+  -e "s/@USER@/$OMUSER/" \
+ $PKG/etc/rc.d/rc.$PRGNAM.new \
+> $PKG/etc/rc.d/rc.$PRGNAM.new
+
+CONFIGS=" \
+  conf/jee-container.xml \
+  conf/jee-container-ssl.xml \
+  conf/red5.properties \
+  conf/red5-core.xml \
+  webapps/openmeetings/config.xml \
+  webapps/openmeetings/WEB-INF/classes/META-INF/persistence.xml"
+
+for conf in $CONFIGS; do
+  mv $PKG/opt/$PRGNAM/$conf $PKG/opt/$PRGNAM/$conf.new
+done
+
+chown -R $OMUSER:$OMGROUP $PKG/opt/$PRGNAM
+
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a \
+  CHANGELOG LICENSE NOTICE README \
+  $PKG/usr/doc/$PRGNAM-$VERSION
+cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
