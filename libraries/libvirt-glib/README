@@ -1,0 +1,2 @@
+A wrapper for libvirt providing a high-level gobject-oriented 
+interface best suited for GLib based applications.
