@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+            |-----handy-ruler------------------------------------------------------|
+virt-manager: virt-manager (graphical front end for libvirt)
+virt-manager:
+virt-manager: The virt-manager application is a desktop user interface for
+virt-manager: managing virtual machines through libvirt. It primarily targets
+virt-manager: KVM VMs, but also manages Xen and LXC (linux containers). It
+virt-manager: presents a summary view of running domains, their live
+virt-manager: performance & resource utilization statistics.
+virt-manager:
+virt-manager: Homepage: http://virt-manager.org/
+virt-manager:
+virt-manager:
