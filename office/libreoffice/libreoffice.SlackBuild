@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=libreoffice
-VERSION=${VERSION:-4.0.4.2}
+VERSION=${VERSION:-4.1.0.4}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_jgeboski}
 
@@ -83,7 +83,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-gtk3 \
   --disable-lockdown \
   --disable-rpath \
-  --disable-zenity \
   --enable-ext-google-docs \
   --enable-ext-languagetool \
   --enable-ext-wiki-publisher \
@@ -99,15 +98,12 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-system-boost \
   --with-system-cairo \
   --with-system-curl \
-  --with-system-db \
   --with-system-expat \
-  --with-system-gettext \
   --with-system-hunspell \
   --with-system-icu \
   --with-system-jpeg \
   --with-system-lcms2 \
   --with-system-libpng \
-  --with-system-libwpd \
   --with-system-libxml \
   --with-system-mesa-headers \
   --with-system-neon \
@@ -115,10 +111,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-system-openldap \
   --with-system-openssl \
   --with-system-poppler \
-  --with-system-redland \
   --with-system-xextensions-headers \
   --with-system-zlib \
-  --with-unix-wrapper=$PRGNAM \
   --with-x \
   --without-afms \
   --without-fonts \
@@ -132,8 +126,10 @@ CXXFLAGS="$SLKCFLAGS" \
   #--enable-python=system
   #--with-helppack-integration
   #--with-system-clucene
+  #--with-system-libwpd
   #--with-system-npapi-headers
   #--with-system-odbc
+  #--with-system-redland
 
 make fetch
 make build
