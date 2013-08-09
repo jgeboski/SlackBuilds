@@ -24,7 +24,7 @@
 
 PRGNAM=libreoffice
 VERSION=${VERSION:-4.1.0.4}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_jgeboski}
 
 if [ -z "$ARCH" ]; then
@@ -69,6 +69,10 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+# 'unpack-sources' is bugged and worthless
+rm -f bin/unpack-sources
+ln -sf /bin/true bin/unpack-sources
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./autogen.sh \
@@ -93,6 +97,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-external-dict-dir=/usr/share/hunspell \
   --with-external-tar=$TMP/$PRGNAM-external \
   --with-lang="$LANGS" \
+  --with-myspell-dicts \
   --with-package-format=inst \
   --with-parallelism=${PARALLEL:-yes} \
   --with-system-boost \
@@ -120,8 +125,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --without-helppack-integration \
   --without-java \
   --without-krb5 \
-  --without-myspell-dicts \
-  --without-ppds
+  --without-ppds \
+  --without-system-dicts
 
   #--enable-python=system
   #--with-helppack-integration
@@ -132,6 +137,11 @@ CXXFLAGS="$SLKCFLAGS" \
   #--with-system-redland
 
 make fetch
+
+# Manually extract because of issues with 'unpack-sources'
+find $TMP/$PRGNAM-external -type f -iname "$PRGNAM*" \
+  -exec tar xvf {} -C $TMP \;
+
 make build
 make distro-pack-install DESTDIR=$PKG
 
