@@ -24,7 +24,7 @@
 
 PRGNAM=libreoffice
 VERSION=${VERSION:-4.1.0.4}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 TAG=${TAG:-_jgeboski}
 
 if [ -z "$ARCH" ]; then
@@ -96,6 +96,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --enable-release-build \
   --with-external-dict-dir=/usr/share/hunspell \
   --with-external-tar=$TMP/$PRGNAM-external \
+  --with-help \
   --with-lang="$LANGS" \
   --with-myspell-dicts \
   --with-package-format=inst \
