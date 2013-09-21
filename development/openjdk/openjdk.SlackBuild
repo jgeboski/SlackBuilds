@@ -23,13 +23,13 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=openjdk
-VERSION=${VERSION:-7u40_b31}
+VERSION=${VERSION:-7u40_b60}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_jgeboski}
 NUMJOBS=${NUMJOBS:-8}
 
 PKGNAM=icedtea
-PKGVER=${ICEDTEA_VERSION:-2.4.1}
+PKGVER=${ICEDTEA_VERSION:-2.4.2}
 SYSARCH=$(uname -m)
 
 if [ -z "$ARCH" ]; then
@@ -74,7 +74,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PKGNAM-$PKGVER
-tar xvf $CWD/$PKGNAM-$PKGVER.tar.gz
+tar xvf $CWD/$PKGNAM-$PKGVER.tar.xz
 cd $PKGNAM-$PKGVER
 chown -R root:root .
 find . \
@@ -99,10 +99,22 @@ CXXFLAGS="$SLKCFLAGS" \
 ./configure \
   --build=$ARCH-slackware-linux \
   --disable-docs \
+  --disable-system-kerberos \
+  --disable-system-lcms \
   --enable-nss \
+  --enable-system-fontconfig \
+  --enable-system-gif \
+  --enable-system-gio \
+  --enable-system-gtk \
+  --enable-system-jpeg \
+  --enable-system-png \
+  --enable-system-zlib \
   --with-jdk-home=/usr/lib${LIBDIRSUFFIX}/java \
   --with-parallel-jobs=$NUMJOBS \
   --with-rhino=/usr/share/ant/lib/rhino.jar
+
+  # lcms2 >= 2.5
+  #--enable-system-lcms
 
 make \
   CORBA_SRC_ZIP=$SOURCES/corba.tar.gz \
