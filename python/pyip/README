@@ -1,0 +1,3 @@
+pyip is a Python package offering assembling/disassembling of raw ip
+packet, including ip, udp, and icmp. Also it includes 2 utilities
+based on raw ip, traceroute and ping.
