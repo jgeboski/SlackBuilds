@@ -1,9 +1,0 @@
-Openmeetings provides video conferencing, instant messaging, white
-board, collaborative document editing and other groupware tools
-using API functions of the Red5 Streaming Server for Remoting and
-Streaming.
-
-Openmeetings requires a user/group, by default 'openmeetings' is used.
-A different user/group can be used via:
-
-  # OMUSER=nobody OMGROUP=nobody ./apache-openmeetings.SlackBuild
