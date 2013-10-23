@@ -1,5 +1,5 @@
 PRGNAM="perl-XML-Simple"
-VERSION="2.51"
+VERSION="2.20"
 HOMEPAGE="http://search.cpan.org/dist/XML-Simple/"
 DOWNLOAD="http://search.cpan.org/CPAN/authors/id/G/GR/GRANTM/XML-Simple-2.20.tar.gz"
 MD5SUM="4d10964e123b76eca36678464daa63cd"
