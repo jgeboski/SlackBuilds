@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=spotify
-VERSION=${VERSION:-0.9.0.133.gd18ed58.259}
+VERSION=${VERSION:-0.9.4.183.g644e24e.428}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_jgeboski}
 
@@ -64,29 +64,38 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+# Fix broken links in binaries
+sed -i \
+  -e "s/\(libnspr4.so\).0d/\1\x0\x0\x0/g" \
+  -e "s/\(libnss3.so\).1d/\1\x0\x0\x0/g" \
+  -e "s/\(libnssutil3.so\).1d/\1\x0\x0\x0/g" \
+  -e "s/\(libplc4.so\).0d/\1\x0\x0\x0/g" \
+  -e "s/\(libsmime3.so\).1d/\1\x0\x0\x0/g" \
+  -e "s/\(libcrypto.so\).0.9.8/\1.1.0.0/g" \
+  -e "s/\(libssl.so\).0.9.8/\1.1.0.0/g" \
+ $PKG/opt/spotify/spotify-client/Data/libcef.so \
+ $PKG/opt/spotify/spotify-client/Data/SpotifyHelper \
+ $PKG/opt/spotify/spotify-client/spotify
+
+cd $PKG/opt/$PRGNAM/$PRGNAM-client
+
 mkdir -p $PKG/usr/doc
 mv $PKG/usr/share/doc/$PRGNAM-client $PKG/usr/doc/$PRGNAM-$VERSION
-rm -rf $PKG/usr/share
+mv changelog licenses.xhtml $PKG/usr/doc/$PRGNAM-$VERSION
+rm -rf $PKG/usr/share readme.fedora *.sh
 
-( cd $PKG/opt/$PRGNAM/$PRGNAM-client
+for icon in $(ls -1 Icons); do
+  info=($(echo $icon | cut -d- -f3 | tr . ' '))
+  idir=$PKG/usr/share/icons/hicolor/${info[0]}x${info[0]}/apps
 
-  ln -sf /usr/lib${LIBDIRSUFFIX}/libnspr4.so    libnspr4.so.0d
-  ln -sf /usr/lib${LIBDIRSUFFIX}/libnss3.so     libnss3.so.1d
-  ln -sf /usr/lib${LIBDIRSUFFIX}/libnssutil3.so libnssutil3.so.1d
-  ln -sf /usr/lib${LIBDIRSUFFIX}/libplc4.so     libplc4.so.0d
-  ln -sf /usr/lib${LIBDIRSUFFIX}/libsmime3.so   libsmime3.so.1d
-)
+  mkdir -p $idir
+  mv Icons/$icon $idir/$PRGNAM.${info[1]}
+done
 
 mkdir -p $PKG/usr/share/applications
-mv $PKG/opt/$PRGNAM/$PRGNAM-client/$PRGNAM.desktop $PKG/usr/share/applications
+mv $PRGNAM.desktop $PKG/usr/share/applications
 sed -i "s/\(Icon=\).*/\1$PRGNAM/" $PKG/usr/share/applications/$PRGNAM.desktop
-
-for size in 16 22 24 32 48 64 128 256 512; do
-  icond=$PKG/usr/share/icons/hicolor/${size}x${size}/apps
-
-  mkdir -p $icond
-  ln -sf /opt/$PRGNAM/$PRGNAM-client/Icons/$PRGNAM-linux-$size.png $icond
-done
+rm -rf Icons
 
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
