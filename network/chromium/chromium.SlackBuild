@@ -35,7 +35,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=chromium
-VERSION=${VERSION:-30.0.1574.1}
+VERSION=${VERSION:-32.0.1678.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_jgeboski}
 
@@ -51,6 +51,11 @@ CWD=$(pwd)
 TMP=${TMP:-/tmp/jgeboski}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
+
+if ! pkg-config --atleast-version=3.14.3 mozilla-nss; then
+  echo "Error: mozilla-nss >= 3.14.3 is required"
+  exit 1
+fi
 
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -116,6 +121,7 @@ build/gyp_chromium --depth=. \
   -Duse_gconf=0 \
   -Duse_gnome_keyring=0 \
   -Duse_kerberos=0 \
+  -Duse_nss=1 \
   -Duse_openssl=0 \
   -Duse_pulseaudio=0 \
   -Duse_system_expat=1 \
@@ -127,7 +133,7 @@ build/gyp_chromium --depth=. \
   -Duse_system_libxml=1 \
   -Duse_system_mesa=0 \
   -Duse_system_nspr=0 \
-  -Duse_system_protobuf=1 \
+  -Duse_system_protobuf=0 \
   -Duse_system_sqlite=0 \
   -Duse_system_ssl=0 \
   -Duse_system_xdg_utils=1 \
@@ -140,6 +146,7 @@ build/gyp_chromium --depth=. \
   #-Ddisable_nacl=0
   #-Duse_system_icu=0
   #-Duse_system_mesa=1
+  #-Duse_system_protobuf=1
   #-Duse_system_sqlite=1
   #-Duse_system_ssl=1
 
@@ -162,8 +169,10 @@ cd out/Release
     locales/ resources/ \
    $PKG/usr/lib${LIBDIRSUFFIX}/chromium
 
+  mv chrome_sandbox chrome-sandbox
+
   install -m 644  *.pak                 $PKG/usr/lib${LIBDIRSUFFIX}/chromium
-  install -m 4755 chrome_sandbox        $PKG/usr/lib${LIBDIRSUFFIX}/chromium
+  install -m 4755 chrome-sandbox        $PKG/usr/lib${LIBDIRSUFFIX}/chromium
   install -m 644  chrome.1              $PKG/usr/man/man1
   install -m 644  $CWD/chromium.desktop $PKG/usr/share/applications
 cd -
